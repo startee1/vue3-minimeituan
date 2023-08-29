@@ -1,19 +1,9 @@
-<script setup lang="ts">
-import { useRouter } from 'vue-router';
-
-const router = useRouter()
-const toWaimai = () => {
-  router.push({ name: 'waimaiindex' })
-}
-
-</script>
-
 <template>
   <div>
     <header>
-      <div class="flex flex-midline bg-mt top">
-        <span>北京</span>
-        <img class="icon-sm" src="../../preview/image/location.png"/>
+      <div class="flex flex-ai-midline bg-mt top">
+        <span class="location">北京</span>
+        <img class="icon-xs" src="../../preview/image/location.png"/>
       </div>
     </header>
     <nav class="flex flex-wrap">
@@ -25,7 +15,20 @@ const toWaimai = () => {
   </div>
 </template>
 
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const toWaimai = () => {
+  router.push({ name: 'waimaiIndex' })
+}
+
+</script>
+
 <style scoped>
+.location {
+  font-size: 16px;
+}
 nav {
   padding: 10px;
 }

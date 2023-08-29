@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Index from '../views/index/index.vue'
 import WaimaiIndex from '../views/waimai/index/index.vue'
+import WaimaiSearch from '../views/waimai/search/search.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,8 +17,13 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'waimaiindex',
+          name: 'waimaiIndex',
           component: WaimaiIndex
+        },
+        {
+          path: '/search',
+          name: 'waimaiSearch',
+          component: WaimaiSearch
         }
       ],
     },

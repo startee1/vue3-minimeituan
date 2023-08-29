@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
@@ -13,8 +14,8 @@
 <style scoped>
 main {
   position: fixed;
-  width: 240px;
-  height: 500px;
+  width: 360px;
+  height: 600px;
   border: 1px solid black;
   left: 0;
   right: 0;
