@@ -27,11 +27,13 @@
           </div>
         </div>
         <div class="info3">
-          <div class="rank-icon"></div>
+          <div class="rank-icon">本地排行第5名</div>
         </div>
         <div class="info4">
           <div class="info4-left">
-            <div class="discounts"></div>
+            <div class="discounts">
+              <span>3.6折</span><span>满10-5</span>
+            </div>
           </div>
           <div class="info4-right">
             <div class="discounts-more"></div>
@@ -47,15 +49,15 @@
   margin: 5px 10px;
   background-color: #fff;
   border-radius: 5px;
-  height: 100px;
+  height: 110px;
   box-sizing: border-box;
   padding: 10px;
   line-height: 1;
   font-size: 10px;
   color: #999;
   .image {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     background-color: #999;
     margin-right: 10px;
     border-radius: 5px;
@@ -102,6 +104,29 @@
       .info2-right {
         &>div{
           margin-left: 5px;
+        }
+      }
+    }
+    .info3 {
+      .rank-icon {
+        display: inline-block;
+        background-color: rgb(251,245,232);
+        color: rgb(193, 144, 39);
+        padding: 5px 10px;
+        font-weight: 600;
+        border-radius: 4px;
+        margin: 2px 0;
+      }
+    }
+    .info4 {
+      margin-top: 3px;
+      .discounts {
+        & span {
+          color: rgb(254, 29, 29);
+          border: 1px solid rgb(255, 17, 17);
+          margin-right: 5px;
+          border-radius: 3px;
+          padding: 0 3px;
         }
       }
     }

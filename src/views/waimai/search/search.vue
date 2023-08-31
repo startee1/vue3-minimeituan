@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import History from './children/history.vue'
-import Find from './children/find.vue'
+  import { useRouter } from 'vue-router';
+  import History from './children/history.vue'
+  import Find from './children/find.vue'
 
-const router = useRouter()
-const toIndex = () => {
-  router.push({ name: 'waimaiIndex' })
-}
+  const router = useRouter()
+  const toIndex = () => {
+    router.push({ name: 'waimaiIndex' })
+  }
 </script>
 
 
