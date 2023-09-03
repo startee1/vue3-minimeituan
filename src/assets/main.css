@@ -20,7 +20,7 @@ ul, li {list-style: none;padding: 0;margin: 0;}
 .flex {display: flex;}
 .flex-ai-midline {align-items: center;}
 .flex-jc-center {justify-content: center;}
-.flex-wrap {display: flex;flex-wrap: wrap;}
+.flex-wrap {flex-wrap: wrap;}
 .flex-jc-sa {justify-content: space-around;}
 .flex-jc-sb {justify-content: space-between;}
 

@@ -1,7 +1,25 @@
 <script setup lang="ts">
-import { DEVICE_TYPE, MOBILE, PC } from '@/utils/Common.js'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-const scrollBlock = ref(null)
+import { DEVICE_TYPE, MOBILE, PC } from '@/utils/Common'
+import { ref, onMounted, onBeforeUnmount, inject, watch } from 'vue'
+
+const myNav = ref<HTMLElement>() // 搜索框
+const myNavVisible = ref(false) // 默认搜索框是否被遮挡
+const scrollTop = inject('scrollTop') // 接收屏幕滚动高度
+const emits = defineEmits(["onShowFilter"])
+
+// 变相监听全局滚动事件
+watch(scrollTop as any, () => {
+  let myNavLocation = myNav.value.getBoundingClientRect()
+  // console.log(searchLocation.top, searchLocation.height)
+  if( myNavLocation.top < myNavLocation.height && myNavVisible.value === false ){
+    myNavVisible.value = true
+  }else if( myNavLocation.top >= myNavLocation.height && myNavVisible.value === true ){
+    myNavVisible.value = false
+  }
+})
+
+
+const scrollBlock = ref(null) // nav水平滚动框
 
 let startX = 0
 let endX = 0;
@@ -14,16 +32,15 @@ const onMouseMove = (event) => {
   }
 }
  
-// 滚动事件
+// 添加滚动事件监听
 const addScroll = (event) => {
     if(scrollBlock.value){
       startX = event.clientX;
       scrollBlock.value.addEventListener('mousemove', onMouseMove)
     }
 }
-
-// const removeScroll = () => {
-function removeScroll () {
+// 移除滚动事件监听
+const removeScroll = () => {
     moveDistance = endX;
     if(scrollBlock.value){
       scrollBlock.value.removeEventListener('mousemove', onMouseMove)
@@ -37,6 +54,10 @@ function removeScroll () {
         scrollBlock.value.style.transform = `translate3d(${moveDistance}px,0,0)`
       }
     }
+}
+// 展示筛选列表
+const showFilter = () => {
+  emits('onShowFilter')
 }
  
 onMounted(() => {
@@ -59,26 +80,51 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="nav flex">
-    <div class="nav-main" v-if="DEVICE_TYPE == PC">
-      <div class="flex"  style="width: 100%;height: 100%;" ref="scrollBlock">
+  <div>
+    <div class="nav flex flex-ai-midline" ref="myNav">
+      <div class="nav-main" v-if="DEVICE_TYPE == PC">
+        <div class="flex"  style="width: 100%;height: 100%;" ref="scrollBlock">
+          <div class="nav-list">点评高分</div>
+          <div class="nav-list">优惠商家</div>
+          <div class="nav-list">品牌商家</div>
+          <div class="nav-list">满减优惠</div>
+          <div class="nav-list">满减1优惠</div>
+        </div>
+      </div>
+      <div class="nav-main-mobile flex" v-else-if="DEVICE_TYPE == MOBILE">
         <div class="nav-list">点评高分</div>
         <div class="nav-list">优惠商家</div>
         <div class="nav-list">品牌商家</div>
         <div class="nav-list">满减优惠</div>
         <div class="nav-list">满减1优惠</div>
       </div>
+      <div class="menu flex flex-ai-midline"  @click="showFilter">
+        <img src="@/preview/image/menu.png"  class="icon-xs"/>
+      </div>
     </div>
-    <div class="nav-main-mobile flex" v-else-if="DEVICE_TYPE == MOBILE">
-      <div class="nav-list">点评高分</div>
-      <div class="nav-list">优惠商家</div>
-      <div class="nav-list">品牌商家</div>
-      <div class="nav-list">满减优惠</div>
-      <div class="nav-list">满减1优惠</div>
-    </div>
-    <div class="menu flex flex-ai-midline">
-      <img src="@/preview/image/menu.png"  class="icon-xs"/>
-    </div>
+    <template v-if="myNavVisible">
+      <div class="nav-lock flex flex-ai-midline" >
+        <div class="nav-main" v-if="DEVICE_TYPE == PC">
+          <div class="flex"  style="width: 100%;height: 100%;" ref="scrollBlock">
+            <div class="nav-list">点评高分</div>
+            <div class="nav-list">优惠商家</div>
+            <div class="nav-list">品牌商家</div>
+            <div class="nav-list">满减优惠</div>
+            <div class="nav-list">满减1优惠</div>
+          </div>
+        </div>
+        <div class="nav-main-mobile flex" v-else-if="DEVICE_TYPE == MOBILE">
+          <div class="nav-list">点评高分</div>
+          <div class="nav-list">优惠商家</div>
+          <div class="nav-list">品牌商家</div>
+          <div class="nav-list">满减优惠</div>
+          <div class="nav-list">满减1优惠</div>
+        </div>
+        <div class="menu flex flex-ai-midline" @click="showFilter">
+          <img src="@/preview/image/menu.png"  class="icon-xs"/>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -86,43 +132,58 @@ onBeforeUnmount(() => {
 .nav {
   position: relative;
   padding: 5px 10px 5px 5px;
-  overflow-x: hidden;
-  .nav-main {
-    z-index: 1;
-    position: relative;
-    overflow: hidden;
-    margin-right: 15px;
-  }
-  .nav-main-mobile {
-    position: relative;
-    top: 10px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    padding-right: 10px;
-    &::-webkit-scrollbar{
-      width: 0;
-    }
-  }
-  .nav-list {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin: 0 5px;
-    white-space: nowrap;
-    background-color: #fff;
-    box-sizing: border-box;
-    border: 1px solid #fff;
-    transition: 0.2s all linear;
-    &:hover {
-      cursor: pointer;
-      border: 1px solid var(--color-text-red);
-      color: var(--color-text-red);
-    }
-  }
-  .menu {
-    box-shadow:  var(--color-background-grey) 0px 0px 15px 15px;
+  overflow: hidden;
+}
+.nav-lock {
+  position: absolute;
+  padding: 5px 10px 5px 5px;
+  top: 50px;
+  background-color: #fff;
+  width: 100%;
+  overflow: hidden;
+  z-index: 11;
+  & .nav-list {
     background-color: var(--color-background-grey);
-    z-index: 99;
   }
+  & .menu {
+    background-color: #fff;
+    box-shadow:  #fff 0px 0px 15px 15px;
+    z-index: 12;
+  }
+}
+.nav-main {
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  margin-right: 15px;
+}
+.nav-main-mobile {
+  position: relative;
+  top: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding-right: 10px;
+}
+.nav-list {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin: 0 5px;
+  white-space: nowrap;
+  background-color: #fff;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  transition: 0.2s all linear;
+  &:hover {
+    cursor: pointer;
+    background-color: var(--color-background-meituan);
+  }
+}
+.menu {
+  box-shadow:  var(--color-background-grey) 0px 0px 15px 15px;
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-background-grey);
+  z-index: 1;
 }
 </style>

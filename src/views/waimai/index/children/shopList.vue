@@ -1,16 +1,47 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+interface IShopPreview {
+  id: number,
+  image?: string,
+  name: string,
+  score: number,
+  month_average_sales: number,
+  per_average_consume: number,
+  special_delivery?: string,
+  min_start_delivery: number,
+  delivery_price: number,
+  delivery_time: number,
+  delivery_distance: string,
+  rank?: string,
+  discounts?: string[]
+}
+
+const router = useRouter()
+const viewShop = (id: number) => {
+  router.push({name: 'waimaiShop', query: {id}}) 
+}
+
+const shopList:IShopPreview[] = [
+  {id: 1,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 2,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 3,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 4,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 5,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+] 
+</script>
+
 <template>
   <div class="list">
-    <div class="business flex">
+    <div class="shoplist flex" v-for="shop in shopList" :key="shop.id" @click="viewShop(shop.id)">
       <div class="image"></div>
       <div class="main">
-        <div class="name">
-          巴拉巴拉
-        </div>
+        <div class="name">{{ shop.name }}</div>
         <div class="info1 flex flex-jc-sb">
           <div class="info1-left flex">
             <div class="score">4.5分</div>
-            <div class="sellcount">月售4000+</div>
-            <div class="priceavr">人均￥30</div>
+            <div class="sellcount">月售{{ shop.month_average_sales }}+</div>
+            <div class="priceavr">人均￥{{ shop.per_average_consume }}</div>
           </div>
           <div class="info1-right">
             <div class="delivery">美团专送</div>
@@ -18,12 +49,12 @@
         </div>
         <div class="info2 flex flex-jc-sb">
           <div class="info2-left flex">
-            <div class="startmoney">起送 Y0</div>
-            <div class="deliverymoney">配送 越Y01</div>
+            <div class="startmoney">起送 ￥{{ shop.min_start_delivery }}</div>
+            <div class="deliverymoney">配送 约￥{{ shop.delivery_price }}</div>
           </div>
           <div class="info2-right flex">
-            <div class="deliverytime">160分钟</div>
-            <div class="distance">12.32km</div>
+            <div class="deliverytime">{{ shop.delivery_time }}分钟</div>
+            <div class="distance">{{ shop.delivery_distance }}</div>
           </div>
         </div>
         <div class="info3">
@@ -45,7 +76,7 @@
 </template>
 
 <style scoped lang="less">
-.business {
+.shoplist {
   margin: 5px 10px;
   background-color: #fff;
   border-radius: 5px;
