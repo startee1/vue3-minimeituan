@@ -33,12 +33,12 @@ const hideFilter = () => {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #eaeaea;
-  z-index: 100;
+  background-color: rgba(234,234,234, 0.5);
+  z-index: 1000;
   top: 60px;
 }
 .filter-list {
-  height: 80%;
+  height: 60%;
   background-color: #fff;
   flex-direction: column;
   position: relative;
@@ -46,7 +46,7 @@ const hideFilter = () => {
 }
 @keyframes fromToptoBot {
   0% {
-    transform: translate3d(0, -200px, 0);
+    transform: translate3d(0, -10px, 0);
     opacity: 0;
   }
   100% {

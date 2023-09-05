@@ -23,13 +23,17 @@ onMounted(() => {
 
 <template>
   <div class="screen">
-    <main ref="container">
+    <main >
       <div class="top"></div>
-      <router-view v-slot="{ Component }">
-        <transition mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <section class="myContainer" >
+        <section id="myApp" ref="container">
+          <router-view v-slot="{ Component }">
+            <transition mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </section>
+      </section>
     </main>
   </div>
 </template>
@@ -50,10 +54,19 @@ onMounted(() => {
   background-color: var(--color-background-grey);
 }
 main {
-  overflow-y: scroll;
   width: 100%;
   height: 100%;
+}
+.myContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+#myApp {
+  overflow-y: scroll;
   padding-bottom: 30px;
+  width: 100%;
+  height: 100%;
 }
 .top {
   height: 20px;
@@ -73,3 +86,4 @@ main {
 
 }
 </style>
+ 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
-  import History from './children/history.vue'
-  import Find from './children/find.vue'
+  import History from './children/History.vue'
+  import Find from './children/Find.vue'
 
   const router = useRouter()
   const toIndex = () => {
@@ -11,7 +11,7 @@
 
 
 <template>
-  <div>
+  <div style="height: 100%;">
     <header class="bg-grey">
       <div class="flex flex-ai-midline header-input">
         <img class="icon-xs" src="@/preview/image/back.png" @click="toIndex"/>
@@ -24,10 +24,11 @@
           </div>
         </div>
       </div>
-      <div class="header-hr"></div>
     </header>
-    <History/>
-    <Find/>
+    <section>
+      <History/>
+      <Find/>
+    </section>
   </div>
 </template>
 
@@ -41,6 +42,11 @@ header {
     height: 13px;
     border-radius: 13px 13px 0 0;
   }
+}
+section {
+  background-color: #fff;
+  border-radius: 10px 10px 0 0;
+  height: 100%;
 }
 .search-item {
   position: relative;

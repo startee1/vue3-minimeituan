@@ -22,7 +22,7 @@ const viewShop = (id: number) => {
   router.push({name: 'waimaiShop', query: {id}}) 
 }
 
-const shopList:IShopPreview[] = [
+const shop_list:IShopPreview[] = [
   {id: 1,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
   {id: 2,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
   {id: 3,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
@@ -33,7 +33,7 @@ const shopList:IShopPreview[] = [
 
 <template>
   <div class="list">
-    <div class="shoplist flex" v-for="shop in shopList" :key="shop.id" @click="viewShop(shop.id)">
+    <div class="shoplist flex" v-for="shop in shop_list" :key="shop.id" @click="viewShop(shop.id)">
       <div class="image"></div>
       <div class="main">
         <div class="name">{{ shop.name }}</div>

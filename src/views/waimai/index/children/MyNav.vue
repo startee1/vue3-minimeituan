@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { DEVICE_TYPE, MOBILE, PC } from '@/utils/Common'
-import { ref, onMounted, onBeforeUnmount, inject, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, inject, watch, Ref } from 'vue'
 
 const myNav = ref<HTMLElement>() // 搜索框
 const myNavVisible = ref(false) // 默认搜索框是否被遮挡
-const scrollTop = inject('scrollTop') // 接收屏幕滚动高度
+const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const emits = defineEmits(["onShowFilter"])
 
 // 变相监听全局滚动事件
 watch(scrollTop as any, () => {
   let myNavLocation = myNav.value.getBoundingClientRect()
-  // console.log(searchLocation.top, searchLocation.height)
-  if( myNavLocation.top < myNavLocation.height && myNavVisible.value === false ){
+  // console.log( scrollTop,myNavLocation)
+  if( scrollTop.value > myNavLocation.bottom - myNavLocation.height && myNavVisible.value === false ){
     myNavVisible.value = true
-  }else if( myNavLocation.top >= myNavLocation.height && myNavVisible.value === true ){
+  }else if( scrollTop.value <= myNavLocation.bottom-myNavLocation.height && myNavVisible.value === true ){
     myNavVisible.value = false
   }
 })
@@ -34,10 +34,10 @@ const onMouseMove = (event) => {
  
 // 添加滚动事件监听
 const addScroll = (event) => {
-    if(scrollBlock.value){
-      startX = event.clientX;
-      scrollBlock.value.addEventListener('mousemove', onMouseMove)
-    }
+  if(scrollBlock.value){
+    startX = event.clientX;
+    scrollBlock.value.addEventListener('mousemove', onMouseMove)
+  }
 }
 // 移除滚动事件监听
 const removeScroll = () => {
@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
   background-color: #fff;
   width: 100%;
   overflow: hidden;
-  z-index: 11;
+  z-index: 999;
   & .nav-list {
     background-color: var(--color-background-grey);
   }

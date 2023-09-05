@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import Category from './children/category.vue'
-import MyNav from './children/nav.vue'
-import ShopList from './children/shopList.vue'
-import MyFilter from './children/myFilter.vue'
+import Category from './children/Category.vue'
+import MyNav from './children/MyNav.vue'
+import ShopList from './children/ShopList.vue'
+import MyFilter from './children/MyFilter.vue'
+import Tabbar from '@/components/Tabbar.vue';
 import { inject, watch, ref, Ref } from 'vue';
 
 const search = ref<HTMLElement>() // 搜索框
 const searchVisible = ref(false) // 默认搜索框是否被遮挡
-const scrollTop = inject<Ref<string>>('scrollTop') // 接收屏幕滚动高度
+const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const reachBottom = inject<Ref<boolean>>('reachBottom') // 接收屏幕到底时刻
 const filterShow = ref(false)
 
 // 变相监听全局滚动事件
 watch(scrollTop , () => {
   let searchLocation = search.value.getBoundingClientRect()
-  if( searchLocation.top < searchLocation.height && searchVisible.value === false ){
+  if( scrollTop.value > searchLocation.x && searchVisible.value === false ){
     searchVisible.value = true
-  }else if( searchLocation.top >= searchLocation.height && searchVisible.value === true ){
+  }else if( scrollTop.value <= searchLocation.x && searchVisible.value === true ){
     searchVisible.value = false
   }
 })
@@ -45,7 +46,7 @@ const showFilter = () => {
 
 
 <template>
-  <div>
+  <div class="index">
     <div v-if="searchVisible">
       <div class="search-lock">
         <div class="search-item" @click="toSearch">
@@ -75,12 +76,18 @@ const showFilter = () => {
       <ShopList/>
       <MyFilter v-if="filterShow" @onHide="hideFilter"/>
     </section>
+    <footer>
+      <Tabbar/>
+    </footer>
   </div>
 </template>
 
 
 
 <style scoped lang="less">
+.index {
+  padding-bottom: 60px;
+}
 header {
   padding: 2px 0 0 0;
 }
@@ -100,12 +107,11 @@ section {
 .search-lock{
   position: absolute;
   padding: 8px;
-  top: 0;
+  top: -1px;
   background-color: #fff;
   width: 100%;
   z-index: 10;
   background-color: var(--color-background-meituan);
-
 }
 .search-item {
   position: relative;
@@ -137,5 +143,10 @@ section {
     text-align: center;
     border-radius: 26px;
   }
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 </style>
