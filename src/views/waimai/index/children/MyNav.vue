@@ -11,9 +11,9 @@ const emits = defineEmits(["onShowFilter"])
 watch(scrollTop as any, () => {
   let myNavLocation = myNav.value.getBoundingClientRect()
   // console.log( scrollTop,myNavLocation)
-  if( scrollTop.value > myNavLocation.bottom - myNavLocation.height && myNavVisible.value === false ){
+  if( scrollTop.value > myNavLocation.bottom + myNavLocation.height && myNavVisible.value === false ){
     myNavVisible.value = true
-  }else if( scrollTop.value <= myNavLocation.bottom-myNavLocation.height && myNavVisible.value === true ){
+  }else if( scrollTop.value <= myNavLocation.bottom + myNavLocation.height && myNavVisible.value === true ){
     myNavVisible.value = false
   }
 })

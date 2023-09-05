@@ -84,7 +84,7 @@ const shop_list:IShopPreview[] = [
   box-sizing: border-box;
   padding: 10px;
   line-height: 1;
-  font-size: 10px;
+  font-size: 12px;
   color: #999;
   .image {
     width: 90px;
@@ -104,11 +104,10 @@ const shop_list:IShopPreview[] = [
     .info1 {
       .info1-left {
         margin-top: 3px;
-        font-size: 10px;
         flex: 1;
         .score {
           font-size: 14px;
-          color: rgb(255,128,0);
+          color: var(--color-text-yellow);
         }
         &>div{
           margin-right: 5px;
@@ -116,9 +115,9 @@ const shop_list:IShopPreview[] = [
       }
       .info1-right {
         .delivery {
-          color: rgb(255,128,0);
+          color: var(--color-text-yellow);
           font-size: 6px;
-          border: 1px solid rgb(255,128,0);
+          border: 1px solid var(--color-text-yellow);
           padding: 2px;
           border-radius: 5px;
         }

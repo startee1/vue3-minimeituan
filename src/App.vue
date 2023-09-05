@@ -24,7 +24,7 @@ onMounted(() => {
 <template>
   <div class="screen">
     <main >
-      <div class="top"></div>
+      <!-- <div class="top"></div> -->
       <section class="myContainer" >
         <section id="myApp" ref="container">
           <router-view v-slot="{ Component }">
@@ -41,8 +41,8 @@ onMounted(() => {
 <style scoped>
 .screen {
   position: fixed;
-  width: 360px;
-  height: 600px;
+  /* width: 360px;
+  height: 600px; */
   border: 1px solid black;
   left: 0;
   right: 0;
@@ -64,7 +64,6 @@ main {
 }
 #myApp {
   overflow-y: scroll;
-  padding-bottom: 30px;
   width: 100%;
   height: 100%;
 }

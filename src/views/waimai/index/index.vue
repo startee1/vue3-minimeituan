@@ -16,9 +16,9 @@ const filterShow = ref(false)
 // 变相监听全局滚动事件
 watch(scrollTop , () => {
   let searchLocation = search.value.getBoundingClientRect()
-  if( scrollTop.value > searchLocation.x && searchVisible.value === false ){
+  if( scrollTop.value > searchLocation.bottom + searchLocation.height && searchVisible.value === false ){
     searchVisible.value = true
-  }else if( scrollTop.value <= searchLocation.x && searchVisible.value === true ){
+  }else if( scrollTop.value <= searchLocation.bottom + searchLocation.height && searchVisible.value === true ){
     searchVisible.value = false
   }
 })
@@ -86,7 +86,7 @@ const showFilter = () => {
 
 <style scoped lang="less">
 .index {
-  padding-bottom: 60px;
+  margin-bottom:100px;
 }
 header {
   padding: 2px 0 0 0;

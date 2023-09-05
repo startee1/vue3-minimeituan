@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { Ref, inject, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import Introduce from './children/Introduce.vue'
+import Menu from './children/z-Menu.vue'
 const router = useRouter()
 const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
-const has_scroll = ref<boolean>(false)
+const has_scroll = ref<boolean>(false) // 控制顶部样式
+const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
+// 监听顶部栏滚动变化
 watch(scrollTop ,(val) => {
   if(val > 0 && has_scroll.value == false) {
     has_scroll.value = true
@@ -12,6 +16,11 @@ watch(scrollTop ,(val) => {
   }
 })
 
+// 切换菜单内容
+const onMenuClick = (type: string) => {
+  css_menu.value = type
+}
+// 路由
 const toWaimaiIndex = () => {
   router.push({ name: 'waimaiIndex' })
 }
@@ -23,29 +32,37 @@ const toWaimaiShopSearch = () => {
 
 <template>
   <div class="shop">
-
-      <div class="shop-bg">
-        <img src="@/preview/image/bg.jpg"/>
+    <!-- 顶部背景 -->
+    <div class="shop-bg">
+      <img src="@/preview/image/bg.jpg"/>
+    </div>
+    <!-- 顶部搜索栏 -->
+    <div class="shop-search flex" :class="{'shop-search-scroll': has_scroll}">
+      <div @click="toWaimaiIndex">
+        <svg t="1693901686178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2506" width="200" height="200"><path d="M405.504 468.992l231.424-210.944c8.192-8.192 8.192-20.48 0-28.672-8.192-8.192-20.48-8.192-28.672 0l-245.76 223.232c-4.096 4.096-6.144 10.24-6.144 16.384 0 6.144 2.048 12.288 6.144 16.384l245.76 223.232c8.192 8.192 20.48 8.192 28.672 0 8.192-8.192 8.192-20.48 0-28.672L405.504 468.992z" p-id="2507"></path></svg>
       </div>
-      <div class="shop-search flex" :class="{'shop-search-scroll': has_scroll}">
-        <div @click="toWaimaiIndex">
-          <svg t="1693901686178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2506" width="200" height="200"><path d="M405.504 468.992l231.424-210.944c8.192-8.192 8.192-20.48 0-28.672-8.192-8.192-20.48-8.192-28.672 0l-245.76 223.232c-4.096 4.096-6.144 10.24-6.144 16.384 0 6.144 2.048 12.288 6.144 16.384l245.76 223.232c8.192 8.192 20.48 8.192 28.672 0 8.192-8.192 8.192-20.48 0-28.672L405.504 468.992z" p-id="2507"></path></svg>
-        </div>
-        <div class="search">
-          <div class="search-item" :class="{'search-item-scroll': has_scroll}" @click="toWaimaiShopSearch" ref="search">
-            <input placeholder="输入"/>
-            <img class="icon-xs search-icon" src="@/preview/image/search.png">
-          </div>
+      <div class="search">
+        <div class="search-item" :class="{'search-item-scroll': has_scroll}" @click="toWaimaiShopSearch" ref="search">
+          <input placeholder="输入"/>
+          <img class="icon-xs search-icon" src="@/preview/image/search.png">
         </div>
       </div>
+    </div>
 
     <main>
-      <section style="height: 100px;">
-        
+      <!-- 商铺简介 -->
+      <section class="introduce">
+        <Introduce/>
       </section>
       <section>
-        <nav style="height: 60px;background-color: red;"></nav>
-        <section style="height: 460px;background-color: rgb(61, 100, 81);"></section>
+        <nav class="menu-list" style="">
+          <div class="menu-title" :class="{'menu-this': css_menu == 'menu'}" @click="onMenuClick('menu')">点菜</div>
+          <div class="menu-title" :class="{'menu-this': css_menu == 'comments'}" @click="onMenuClick('comments')">评价</div>
+          <div class="menu-title" :class="{'menu-this': css_menu == 'details'}" @click="onMenuClick('details')">商家</div>
+        </nav>
+        <section style="height: calc(100vh - 90px);background-color: rgb(61, 100, 81);">
+          <Menu/>
+        </section>
       </section>
     </main>
   </div>
@@ -126,5 +143,32 @@ main {
   top: -10px;
   padding-top: 10px;
   border-radius: 10px 10px 0 0;
+}
+.introduce {
+  min-height: 100px;
+}
+.menu-list {
+  height: 40px;
+  display: flex;
+  border-bottom: 1px solid grey;
+  .menu-title {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    width: 80px;
+    font-size: 15px;
+    color: #333;
+    text-align: center;
+  }
+  .menu-this::before {
+    position: absolute;
+    content: "";
+    left: 28px;
+    bottom: 0;
+    width: 20px;
+    height: 3px;
+    border-radius: 10px;
+    background-color: var(--color-background-meituan);
+  }
 }
 </style>
