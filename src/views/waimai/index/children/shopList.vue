@@ -6,7 +6,7 @@ interface IShopPreview {
   image?: string,
   name: string,
   score: number,
-  month_average_sales: number,
+  month_sales: number,
   per_average_consume: number,
   special_delivery?: string,
   min_start_delivery: number,
@@ -23,11 +23,11 @@ const viewShop = (id: number) => {
 }
 
 const shop_list:IShopPreview[] = [
-  {id: 1,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 2,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 3,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 4,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 5,name: '巴拉巴拉',score: 4.5,month_average_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 1,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 2,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 3,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 4,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
+  {id: 5,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
 ] 
 </script>
 
@@ -40,7 +40,7 @@ const shop_list:IShopPreview[] = [
         <div class="info1 flex flex-jc-sb">
           <div class="info1-left flex">
             <div class="score">4.5分</div>
-            <div class="sellcount">月售{{ shop.month_average_sales }}+</div>
+            <div class="sellcount">月售{{ shop.month_sales }}+</div>
             <div class="priceavr">人均￥{{ shop.per_average_consume }}</div>
           </div>
           <div class="info1-right">
