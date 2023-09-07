@@ -139,7 +139,6 @@ const toWaimaiShopSearch = () => {
 }
 main {
   background: #fff;
-  position: relative;
   top: -10px;
   padding-top: 10px;
   border-radius: 10px 10px 0 0;

@@ -8,6 +8,13 @@ ul, li {list-style: none;padding: 0;margin: 0;}
 .icon-ms {width: 20px;height: 20px;}
 .icon-md {width: 30px;height: 30px;}
 
+/* font-size */
+.fs-xs {font-size: 12px;}
+.fs-sm {font-size: 14px;}
+
+/* color */
+.c-grey {color: var(--color-text-grey);}
+
 /* background-color */
 .bg-mt {background-color: var(--color-background-meituan);}
 .bg-grey {background-color: var(--color-background-grey);}
