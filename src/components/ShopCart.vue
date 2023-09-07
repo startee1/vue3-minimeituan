@@ -173,7 +173,7 @@ main {
   width: 100%;
   height: 100%;
   z-index: 100;
-  background-color: rgba(200, 199, 199, 0.8);
+  background-color: var(--color-background-dialog);
   .dialog-info {
     position: absolute;
     width: 100%;

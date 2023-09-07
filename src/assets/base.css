@@ -1,6 +1,7 @@
 :root {
   --color-background-meituan: rgb(255,204,51);
   --color-background-grey: rgb(235, 236, 236);
+  --color-background-dialog: rgba(200, 199, 199, 0.8);
   --color-text-red: rgb(240, 41, 41);
   --color-text-yellow: rgb(255,128,0);
   --color-text-grey: rgb(153, 153, 153);

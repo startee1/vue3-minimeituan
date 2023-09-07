@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { ref } from 'vue'
 
 interface IGoods {
   title: string
@@ -14,7 +14,14 @@ interface IGoods {
 const props = defineProps<{
   goodsList?:IGoods[]
 }>()
-let { goods } = props
+let { goodsList } = props
+
+// 规格选择弹窗
+const goods_choice_container = ref<boolean>(true)
+// 规格选择弹窗
+const showGoodsChoice = () => {
+
+}
 </script>
 
 <template>
@@ -33,10 +40,16 @@ let { goods } = props
         <div class="info-discount"></div>
         <div class="info-bottom flex flex-jc-sb">
           <div class="info-bottom-left">￥<span>29</span></div>
-          <div class="info-bottom-right">+</div>
+          <!-- <div class="info-bottom-right-1">+</div> -->
+          <div class="info-bottom-right-2" @click="showGoodsChoice">按规格</div>
         </div>
       </section>
     </main>
+    <div class="goods-choice" v-if="goods_choice_container">
+      <div class="my-goods-choice">
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,11 +93,52 @@ main {
       margin-right: 10px;
     }
   }
+  .info-bottom {
+    align-items: flex-end;
+  }
   .info-bottom-left {
     color: var(--color-text-yellow);
     span {
       font-size: 20px;
     }
+  }
+  .info-bottom-right-1 {
+    background-color: var(--color-background-meituan);
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    line-height: 14px;
+    font-size: 20px;
+    text-align: center;
+  }
+  .info-bottom-right-2 {
+    background-color: var(--color-background-meituan);
+    width: 60px;
+    height: 20px;
+    border-radius: 5px;
+    line-height: 16px;
+    text-align: center;
+  }
+}
+.goods-choice {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  background-color: var(--color-background-dialog);
+  z-index: 10000;
+  .my-goods-choice {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 300px;
+    min-height: 200px;
+    max-height: 400px;
+    background-color: #fff;
   }
 }
 </style>
