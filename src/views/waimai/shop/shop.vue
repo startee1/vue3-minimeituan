@@ -2,11 +2,16 @@
 import { Ref, inject, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import Introduce from './children/Introduce.vue'
-import Menu from './children/z-Menu.vue'
+import Menu from './children/Menu.vue'
+import Comment from './children/Comment.vue'
+import Detail from './children/Detail.vue'
+import Goods from '../z-goods/Goods.vue'
 const router = useRouter()
 const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const has_scroll = ref<boolean>(false) // 控制顶部样式
 const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
+const show_goods = ref<boolean>(false) // 控制商品详情页
+const goods_id = ref<number>(0) // 商品 id
 // 监听顶部栏滚动变化
 watch(scrollTop ,(val) => {
   if(val > 0 && has_scroll.value == false) {
@@ -15,6 +20,13 @@ watch(scrollTop ,(val) => {
     has_scroll.value = false
   }
 })
+const onCloseGoods = () => {
+  show_goods.value = false
+}
+const onShowGoods = () => {
+  show_goods.value = true
+}
+
 
 // 切换菜单内容
 const onMenuClick = (type: string) => {
@@ -48,6 +60,7 @@ const toWaimaiShopSearch = () => {
         </div>
       </div>
     </div>
+    <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods"/>
 
     <main>
       <!-- 商铺简介 -->
@@ -55,13 +68,18 @@ const toWaimaiShopSearch = () => {
         <Introduce/>
       </section>
       <section>
-        <nav class="menu-list" style="">
+        <nav class="menu-list">
           <div class="menu-title" :class="{'menu-this': css_menu == 'menu'}" @click="onMenuClick('menu')">点菜</div>
-          <div class="menu-title" :class="{'menu-this': css_menu == 'comments'}" @click="onMenuClick('comments')">评价</div>
-          <div class="menu-title" :class="{'menu-this': css_menu == 'details'}" @click="onMenuClick('details')">商家</div>
+          <div class="menu-title" :class="{'menu-this': css_menu == 'comment'}" @click="onMenuClick('comment')">评价</div>
+          <div class="menu-title" :class="{'menu-this': css_menu == 'detail'}" @click="onMenuClick('detail')">商家</div>
         </nav>
-        <section style="height: calc(100vh - 90px);background-color: rgb(61, 100, 81);">
-          <Menu/>
+        <section class="menu-info">
+          <!-- 菜单 -->
+          <Menu v-if="css_menu == 'menu'" @open-goods="onShowGoods"/>
+          <!-- 评论 -->
+          <Comment v-else-if="css_menu == 'comment'"/>
+          <!-- 店铺详情 -->
+          <Detail v-else-if="css_menu == 'detail'"/>
         </section>
       </section>
     </main>
@@ -169,5 +187,8 @@ main {
     border-radius: 10px;
     background-color: var(--color-background-meituan);
   }
+}
+.menu-info {
+  height: calc(100vh - 90px);
 }
 </style>

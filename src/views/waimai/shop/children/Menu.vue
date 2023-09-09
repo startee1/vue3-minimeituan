@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import GoodsLists from '@/components/GoodsLists.vue';
 import ShopCart from '@/components/ShopCart.vue';
+
+const emit = defineEmits<{
+  openGoods: [id: number]
+}>()
 </script>
 
 <template>
@@ -14,7 +18,7 @@ import ShopCart from '@/components/ShopCart.vue';
       <div>
         <div class="title">手机</div>
         <div class="goods-list">
-          <GoodsLists />
+          <GoodsLists @open-goods="(id) => emit('openGoods', id)"/>
           <GoodsLists />
         </div>
       </div>

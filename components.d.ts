@@ -8,7 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Cart: typeof import('./src/components/Cart.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
+    ElPopover: typeof import('element-plus/es')['ElPopover']
+    ElRate: typeof import('element-plus/es')['ElRate']
     GoodLists: typeof import('./src/components/GoodLists.vue')['default']
     GoodsLists: typeof import('./src/components/GoodsLists.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
