@@ -32,22 +32,24 @@ const showGoodsChoice = () => {
 <template>
   <div>
     <main>
-      <section class="icon">
-        <img class="icon-pic"/>
-      </section>
-      <section class="info" @click="emit('openGoods', 123)">
-        <div class="info-title">啊十九大看来是</div>
-        <div class="info-rank"><span>店内排行第一</span></div>
-        <div class="info-text flex">
-          <div class="info-text-1">月售400+</div>
-          <div class="info-text-2">好评率 77%</div>
-        </div>
-        <div class="info-discount"></div>
-        <div class="info-bottom flex flex-jc-sb">
-          <div class="info-bottom-left">￥<span>29</span></div>
-          <!-- <div class="info-bottom-right-1">+</div> -->
-          <div class="info-bottom-right-2" @click="goods_choice_container = true">按规格</div>
-        </div>
+      <section class="flex" @click="emit('openGoods', 123)">
+        <section class="icon">
+          <img class="icon-pic"/>
+        </section>
+        <section class="info">
+          <div class="info-title">啊十九大看来是</div>
+          <div class="info-rank"><span>店内排行第一</span></div>
+          <div class="info-text flex">
+            <div class="info-text-1">月售400+</div>
+            <div class="info-text-2">好评率 77%</div>
+          </div>
+          <div class="info-discount"></div>
+          <div class="info-bottom flex flex-jc-sb">
+            <div class="info-bottom-left">￥<span>29</span></div>
+            <!-- <div class="info-bottom-right-1">+</div> -->
+            <div class="info-bottom-right-2" @click="goods_choice_container = true">按规格</div>
+          </div>
+        </section>
       </section>
     </main>
     <div class="goods-choice" @click="goods_choice_container = false" v-if="goods_choice_container">
@@ -87,7 +89,6 @@ const showGoodsChoice = () => {
 
 <style scoped lang="less">
 main {
-  display: flex;
   margin: 10px 0;
 }
 .icon {

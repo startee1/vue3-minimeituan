@@ -1,12 +1,35 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const score = ref<number>(0)
+interface Props {
+  reply?: boolean
+  score?: boolean
+  closeable?: boolean
+  comment_right_offset?: boolean // 评论向右偏移
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  reply: false,
+  score: false,
+  closeable: false,
+  comment_right_offset: true
+})
+
+const emit = defineEmits<{
+  close: []
+}>()
+
+const my_score = ref<number>(0)
 </script>
 
 <template>
   <div class="comment">
-    <nav class="flex flex-wrap">
+    <section v-if="props.closeable">
+      <div @click="emit('close')" class="close flex flex-ai-midline flex-jc-center">
+        <el-icon :size="20"><ArrowLeft /></el-icon>
+      </div>
+    </section>
+    <nav class="flex flex-wrap" :class="{'closeNav': props.closeable}">
       <div>全部</div>
       <div>好评</div>
       <div>差评</div>
@@ -23,11 +46,13 @@ const score = ref<number>(0)
               <div class="user-date">2023.6.7</div>
             </div>
           </div>
-          <div class="score-info"><el-rate v-model="score" size="small" /></div>
-          <div class="comment-info">这个好啊</div>
-          <div class="reply-info">
-            <div class="reply-name">商家恢复:</div>
-            <div class="reply-comment">谢谢认可</div>
+          <div :class="{'right_offset': props.comment_right_offset}">
+            <div class="score-info" v-if="props.score"><el-rate v-model="my_score" size="small" /></div>
+            <div class="comment-info">这个好啊</div>
+            <div class="reply-info" v-if="props.reply">
+              <div class="reply-name">商家恢复:</div>
+              <div class="reply-comment">谢谢认可</div>
+            </div>
           </div>
         </div>
       </section>
@@ -37,8 +62,18 @@ const score = ref<number>(0)
 
 <style scoped lang="less">
 .comment {
-  margin-top: 10px;
-  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.close {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: var(--color-background-grey);
+  margin: 20px 15px;
+  position: absolute;
+  top: 0;
 }
 nav {
   display: flex;
@@ -50,6 +85,9 @@ nav {
     padding: 3px 10px;
     border-radius: 5px;
   }
+}
+.closeNav {
+  padding-top: 60px;
 }
 main {
   padding: 15px;
@@ -85,6 +123,9 @@ main {
       font-size: 14px;
       font-weight: bold;
     }
+  }
+  .right_offset {
+    margin-left: 70px;
   }
 }
 </style>

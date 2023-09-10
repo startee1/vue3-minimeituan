@@ -3,7 +3,7 @@ import { Ref, inject, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import Introduce from './children/Introduce.vue'
 import Menu from './children/Menu.vue'
-import Comment from './children/Comment.vue'
+import Comment from '@/components/Comment.vue'
 import Detail from './children/Detail.vue'
 import Goods from '../z-goods/Goods.vue'
 const router = useRouter()
@@ -11,6 +11,7 @@ const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const has_scroll = ref<boolean>(false) // 控制顶部样式
 const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
 const show_goods = ref<boolean>(false) // 控制商品详情页
+const show_all_comment = ref<boolean>(false) // 控制商品所有评论页
 const goods_id = ref<number>(0) // 商品 id
 // 监听顶部栏滚动变化
 watch(scrollTop ,(val) => {
@@ -25,6 +26,12 @@ const onCloseGoods = () => {
 }
 const onShowGoods = () => {
   show_goods.value = true
+}
+const onOpenAllCooment = () => {
+  show_all_comment.value = true
+}
+const onCloseAllComment = () => {
+  show_all_comment.value = false
 }
 
 
@@ -60,8 +67,10 @@ const toWaimaiShopSearch = () => {
         </div>
       </div>
     </div>
-    <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods"/>
-
+    <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
+    <div v-if="show_all_comment" class="all-comment">
+      <Comment closeable  :goods_id="goods_id" @close="onCloseAllComment"/>
+    </div>
     <main>
       <!-- 商铺简介 -->
       <section class="introduce">
@@ -189,6 +198,16 @@ main {
   }
 }
 .menu-info {
-  height: calc(100vh - 90px);
+  height: calc(100vh - 80px);
+}
+.all-comment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1010;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
 </style>

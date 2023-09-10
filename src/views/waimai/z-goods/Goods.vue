@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Comment from '@/components/Comment.vue'
 
 const css_menu = ref<string>('menu') // 导航分类
 
@@ -8,6 +9,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{
   closeGoods: []
+  openAllComment: []
 }>()
 
 // 切换菜单内容
@@ -79,7 +81,7 @@ const onMenuClick = (type: string) => {
           </div>
           <div class="pre-comment-right">2022.1.2</div>
         </div>
-        <div class="more-comment">更多<el-icon><ArrowRight /></el-icon></div>
+        <div class="more-comment" @click="emit('openAllComment')">更多<el-icon><ArrowRight /></el-icon></div>
       </section>
     </main>
   </div>
@@ -91,13 +93,19 @@ const onMenuClick = (type: string) => {
   width: 100%;
   height: 100%;
   top: 0;
-  background-color: #fff;
   z-index: 1001;
   overflow-y: scroll;
+  background-color: var(--color-background-grey);
+  section {
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding-bottom: 10px;
+  }
 }
 .top {
   position: absolute;
   top: 0;
+  left: 0;
   .close {
     opacity: 0.8
   }
@@ -111,14 +119,7 @@ const onMenuClick = (type: string) => {
     height: 100%;  
   }
 }
-.goods {
-  background-color: var(--color-background-grey);
-  section {
-    margin-bottom: 10px;
-    background-color: #fff;
-    padding-bottom: 10px;
-  }
-}
+
 
 .info {
   padding: 10px;
