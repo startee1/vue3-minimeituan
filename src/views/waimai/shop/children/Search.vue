@@ -7,6 +7,7 @@ const input1 = ref<string>('')
 const emit = defineEmits<{
   close: []
   openGoods: [id: number]
+  openSettle: []
 }>()
 </script>
 
@@ -20,16 +21,16 @@ const emit = defineEmits<{
         <el-input
           v-model="input1"
           clearable 
-          placeholder="Please Input"
+          placeholder="请输入商品名称"
           :suffix-icon="Search"
         />
       </div>
       <div>搜索</div>
     </div>
+    <ShopCart  @open-settle="emit('openSettle')"/>
     <main>
       <GoodsLists @open-goods="(id) => emit('openGoods', id)"/>
     </main>
-    <ShopCart/>
   </div>
 </template>
 

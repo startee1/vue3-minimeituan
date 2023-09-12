@@ -189,6 +189,7 @@ const emit = defineEmits<{
   height: 100%;
   position: relative;
   background: var(--color-background-grey);
+  
   &::before {
     content: '';
     position: absolute;

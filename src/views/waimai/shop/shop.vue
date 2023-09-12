@@ -93,14 +93,14 @@ const toWaimaiIndex = () => {
     </div>
     <!-- 结算页 -->
     <transition mode="out-in" name="dialog">
-      <div v-if="show_settle" class="full-screen">
+      <div v-if="show_settle" class="full-screen" style="z-index: 1300;">
         <Settle closeable   @close="onCloseSettle"/>
       </div>
     </transition>
     <!-- 商铺内置搜索页 -->
     <transition mode="out-in" name="dialog">
       <div v-if="show_waimai_search" class="full-screen">
-        <WaimaiSearch   @close="onCloseWaimaiShopSearch" @open-goods="onOpenGoods"/>
+        <WaimaiSearch   @close="onCloseWaimaiShopSearch" @open-goods="onOpenGoods" @open-settle="onOpenSettle"/>
       </div>
     </transition>
 
