@@ -5,6 +5,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
+  <!-- 商品参数选择 -->
   <div class="goods-choice" @click.stop="emit('close')">
     <div class="my-goods-details" @click.stop>
       <div class="my-goods-choice">

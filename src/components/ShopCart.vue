@@ -11,6 +11,7 @@ const show_dialog = ref<boolean>(false)
 </script>
 
 <template>
+  <!-- 购物车 -->
   <div class="shop-cart">
     <main class="flex">
       <section class="cart-logo" @click="show_dialog = true">

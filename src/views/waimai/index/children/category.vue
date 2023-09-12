@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
 
 interface IFoodType {
   text: string,
@@ -22,12 +24,18 @@ const foodViceTypeArray:IFoodType[] = [
   {id: 1,text: 'zxc',img:'/public/favicon.ico'},
 ]
 
+const router = useRouter()
+
+const onShopType = () => {
+  router.push({ name: 'waimaiShopType', params: { id: 3 } })
+}
+
 </script>
 
 <template>
   <div>
     <template v-if="foodMainTypeArray.length > 0">
-      <div class="grid">
+      <div class="grid" @click="onShopType">
         <div v-for="mt in foodMainTypeArray" :key="mt.id" class="food-type" >
           <img :src="mt.img" class="icon-md"/>
           <div>{{ mt.text }}</div>

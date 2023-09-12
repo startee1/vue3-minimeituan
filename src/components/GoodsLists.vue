@@ -30,6 +30,7 @@ const showGoodsChoice = () => {
 </script>
 
 <template>
+  <!-- 商品列表 -->
   <div>
     <main>
       <section class="flex" @click="emit('openGoods', 123)">

@@ -26,6 +26,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
+  <!-- 单个商铺结算页 -->
   <div class="settle">
     <section class="top flex">
       <div @click="emit('close')">
