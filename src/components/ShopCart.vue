@@ -2,6 +2,10 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
+const emit = defineEmits<{
+  openSettle: []
+}>()
+
 const num = ref<number>(0)
 const show_dialog = ref<boolean>(false)
 </script>
@@ -24,7 +28,7 @@ const show_dialog = ref<boolean>(false)
       </section>
       <section class="buy ">
         <!-- <div class="start-money flex flex-ai-midline flex-jc-center">差￥181111起送</div> -->
-        <div class="buy-money  flex flex-ai-midline flex-jc-center">去结算</div>
+        <div class="buy-money  flex flex-ai-midline flex-jc-center" @click="emit('openSettle')">去结算</div>
       </section>
     </main>
     <!-- 查看购买列表 -->

@@ -7,6 +7,7 @@ const menu_type = ref<string>('') // 菜单目录类型
 
 const emit = defineEmits<{
   openGoods: [id: number]
+  openSettle: []
 }>()
 
 const onTypeChange = (type:string) => {
@@ -50,7 +51,7 @@ const onTypeChange = (type:string) => {
         </div>
       </div>
     </div>
-    <ShopCart />
+    <ShopCart @open-settle="emit('openSettle')"/>
   </div>
 </template>
 

@@ -47,12 +47,12 @@ const showGoodsChoice = () => {
           <div class="info-bottom flex flex-jc-sb">
             <div class="info-bottom-left">￥<span>29</span></div>
             <!-- <div class="info-bottom-right-1">+</div> -->
-            <div class="info-bottom-right-2" @click="goods_choice_container = true">按规格</div>
+            <div class="info-bottom-right-2" @click.stop="goods_choice_container = true">按规格</div>
           </div>
         </section>
       </section>
     </main>
-    <div class="goods-choice" @click="goods_choice_container = false" v-if="goods_choice_container">
+    <div class="goods-choice" @click.stop="goods_choice_container = false" v-if="goods_choice_container">
       <div class="my-goods-details" @click.stop>
         <div class="my-goods-choice">
           <div class="goods-title">美味</div>

@@ -4,14 +4,16 @@ import { useRouter } from 'vue-router';
 import Introduce from './children/Introduce.vue'
 import Menu from './children/Menu.vue'
 import Comment from '@/components/Comment.vue'
+import Settle from '@/components/Settle.vue'
 import Detail from './children/Detail.vue'
-import Goods from '../z-goods/Goods.vue'
+import Goods from '../goods/Goods.vue'
 const router = useRouter()
 const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const has_scroll = ref<boolean>(false) // 控制顶部样式
 const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
 const show_goods = ref<boolean>(false) // 控制商品详情页
 const show_all_comment = ref<boolean>(false) // 控制商品所有评论页
+const show_settle = ref<boolean>(false) // 控制结算页
 const goods_id = ref<number>(0) // 商品 id
 // 监听顶部栏滚动变化
 watch(scrollTop ,(val) => {
@@ -24,7 +26,7 @@ watch(scrollTop ,(val) => {
 const onCloseGoods = () => {
   show_goods.value = false
 }
-const onShowGoods = () => {
+const onOpenGoods = () => {
   show_goods.value = true
 }
 const onOpenAllCooment = () => {
@@ -32,6 +34,12 @@ const onOpenAllCooment = () => {
 }
 const onCloseAllComment = () => {
   show_all_comment.value = false
+}
+const onOpenSettle = () => {
+  show_settle.value = true
+}
+const onCloseSettle = () => {
+  show_settle.value = false
 }
 
 
@@ -66,11 +74,20 @@ const toWaimaiShopSearch = () => {
           <img class="icon-xs search-icon" src="@/preview/image/search.png">
         </div>
       </div>
+      <div><el-icon :size="30"><Star /></el-icon></div>
     </div>
-    <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
-    <div v-if="show_all_comment" class="all-comment">
+    <transition mode="out-in" name="dialog">
+      <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
+    </transition>
+    <div v-if="show_all_comment" class="full-screen">
       <Comment closeable  :goods_id="goods_id" @close="onCloseAllComment"/>
     </div>
+    <transition mode="out-in" name="dialog">
+      <div v-if="show_settle" class="full-screen">
+        <Settle closeable   @close="onCloseSettle"/>
+      </div>
+    </transition>
+
     <main>
       <!-- 商铺简介 -->
       <section class="introduce">
@@ -84,7 +101,7 @@ const toWaimaiShopSearch = () => {
         </nav>
         <section class="menu-info">
           <!-- 菜单 -->
-          <Menu v-if="css_menu == 'menu'" @open-goods="onShowGoods"/>
+          <Menu v-if="css_menu == 'menu'" @open-goods="onOpenGoods" @open-settle="onOpenSettle"/>
           <!-- 评论 -->
           <Comment v-else-if="css_menu == 'comment'"/>
           <!-- 店铺详情 -->
@@ -200,7 +217,7 @@ main {
 .menu-info {
   height: calc(100vh - 80px);
 }
-.all-comment {
+.full-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -209,5 +226,25 @@ main {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+}
+
+
+@keyframes axisX {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+
+/* 2. 过渡类名 */
+/* 开始 */
+.dialog-enter-active {
+  animation: axisX 0.5s;
+}
+/* 结束 */
+.dialog-leave-active {
+  animation: axisX 0.5s reverse;
 }
 </style>

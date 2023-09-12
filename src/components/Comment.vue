@@ -23,6 +23,7 @@ const my_score = ref<number>(0)
 </script>
 
 <template>
+  <!-- 所有评论页 -->
   <div class="comment">
     <section v-if="props.closeable">
       <div @click="emit('close')" class="close flex flex-ai-midline flex-jc-center">
