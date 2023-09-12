@@ -22,6 +22,7 @@ declare module 'vue' {
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRate: typeof import('element-plus/es')['ElRate']
     GoodLists: typeof import('./src/components/GoodLists.vue')['default']
+    GoodsChoice: typeof import('./src/components/GoodsChoice.vue')['default']
     GoodsLists: typeof import('./src/components/GoodsLists.vue')['default']
     MultiSettle: typeof import('./src/components/MultiSettle.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

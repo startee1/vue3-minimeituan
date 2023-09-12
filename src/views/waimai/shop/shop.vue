@@ -7,6 +7,7 @@ import Comment from '@/components/Comment.vue'
 import Settle from '@/components/Settle.vue'
 import Detail from './children/Detail.vue'
 import Goods from '../goods/Goods.vue'
+import WaimaiSearch from './children/Search.vue'
 const router = useRouter()
 const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const has_scroll = ref<boolean>(false) // 控制顶部样式
@@ -14,6 +15,7 @@ const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
 const show_goods = ref<boolean>(false) // 控制商品详情页
 const show_all_comment = ref<boolean>(false) // 控制商品所有评论页
 const show_settle = ref<boolean>(false) // 控制结算页
+const show_waimai_search = ref<boolean>(false) // 控制外卖搜索页
 const goods_id = ref<number>(0) // 商品 id
 // 监听顶部栏滚动变化
 watch(scrollTop ,(val) => {
@@ -41,6 +43,13 @@ const onOpenSettle = () => {
 const onCloseSettle = () => {
   show_settle.value = false
 }
+const onOpenWaimaiShopSearch = () => {
+  show_waimai_search.value = true
+}
+const onCloseWaimaiShopSearch = () => {
+  show_waimai_search.value = false
+
+}
 
 
 // 切换菜单内容
@@ -51,9 +60,7 @@ const onMenuClick = (type: string) => {
 const toWaimaiIndex = () => {
   router.push({ name: 'waimaiIndex' })
 }
-const toWaimaiShopSearch = () => {
-  router.push({ name: 'waimaiIndex' })
-}
+
 </script>
 
 
@@ -69,22 +76,31 @@ const toWaimaiShopSearch = () => {
         <svg t="1693901686178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2506" width="200" height="200"><path d="M405.504 468.992l231.424-210.944c8.192-8.192 8.192-20.48 0-28.672-8.192-8.192-20.48-8.192-28.672 0l-245.76 223.232c-4.096 4.096-6.144 10.24-6.144 16.384 0 6.144 2.048 12.288 6.144 16.384l245.76 223.232c8.192 8.192 20.48 8.192 28.672 0 8.192-8.192 8.192-20.48 0-28.672L405.504 468.992z" p-id="2507"></path></svg>
       </div>
       <div class="search">
-        <div class="search-item" :class="{'search-item-scroll': has_scroll}" @click="toWaimaiShopSearch" ref="search">
+        <div class="search-item" :class="{'search-item-scroll': has_scroll}" @click="onOpenWaimaiShopSearch" ref="search">
           <input placeholder="输入"/>
           <img class="icon-xs search-icon" src="@/preview/image/search.png">
         </div>
       </div>
       <div><el-icon :size="30"><Star /></el-icon></div>
     </div>
+    <!-- 商品详情页 -->
     <transition mode="out-in" name="dialog">
       <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
     </transition>
-    <div v-if="show_all_comment" class="full-screen">
+    <!-- 所有评论页 -->
+    <div v-if="show_all_comment" class="full-screen" style="z-index: 1200;">
       <Comment closeable  :goods_id="goods_id" @close="onCloseAllComment"/>
     </div>
+    <!-- 结算页 -->
     <transition mode="out-in" name="dialog">
       <div v-if="show_settle" class="full-screen">
         <Settle closeable   @close="onCloseSettle"/>
+      </div>
+    </transition>
+    <!-- 商铺内置搜索页 -->
+    <transition mode="out-in" name="dialog">
+      <div v-if="show_waimai_search" class="full-screen">
+        <WaimaiSearch   @close="onCloseWaimaiShopSearch" @open-goods="onOpenGoods"/>
       </div>
     </transition>
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Comment from '@/components/Comment.vue'
+import GoodsChoice from '@/components/GoodsChoice.vue'
+
 
 const css_menu = ref<string>('menu') // 导航分类
 
@@ -11,7 +13,8 @@ const emit = defineEmits<{
   closeGoods: []
   openAllComment: []
 }>()
-
+// 商品规格层
+const goods_choice_container = ref<boolean>(false)
 // 切换菜单内容
 const onMenuClick = (type: string) => {
   css_menu.value = type
@@ -58,7 +61,7 @@ const onMenuClick = (type: string) => {
       <section>
         <nav class="menu-list">
           <div class="menu-title" :class="{'menu-this': css_menu == 'menu'}" @click="onMenuClick('menu')">点菜</div>
-          <div class="menu-title" :class="{'menu-this': css_menu == 'comment'}" @click="onMenuClick('comment')">评价</div>
+          <!-- <div class="menu-title" :class="{'menu-this': css_menu == 'comment'}" @click="onMenuClick('comment')">评价</div> -->
         </nav>
         <div class="detail-info flex">
           <div class="detail-left">比例巴拉阿拉山口大家阿萨德:</div>
@@ -84,6 +87,7 @@ const onMenuClick = (type: string) => {
         <div class="more-comment" @click="emit('openAllComment')">更多<el-icon><ArrowRight /></el-icon></div>
       </section>
     </main>
+    <GoodsChoice @close="goods_choice_container = false" v-if="goods_choice_container"/>
   </div>
 </template>
 
@@ -93,7 +97,7 @@ const onMenuClick = (type: string) => {
   width: 100%;
   height: 100%;
   top: 0;
-  z-index: 1001;
+  z-index: 1100;
   overflow-y: scroll;
   background-color: var(--color-background-grey);
   section {
@@ -255,4 +259,5 @@ const onMenuClick = (type: string) => {
   border-radius: 5px;
   text-align:center;
 }
+
 </style>
