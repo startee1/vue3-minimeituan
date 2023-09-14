@@ -35,7 +35,7 @@ const hideFilter = () => {
   height: 100%;
   background-color: rgba(234,234,234, 0.5);
   z-index: 1000;
-  top: 60px;
+  top: 4px;
 }
 .filter-list {
   height: 60%;

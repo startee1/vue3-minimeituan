@@ -32,6 +32,8 @@ ul, li {list-style: none;padding: 0;margin: 0;}
 .flex-wrap {flex-wrap: wrap;}
 .flex-jc-sa {justify-content: space-around;}
 .flex-jc-sb {justify-content: space-between;}
+.flex-dir-col {flex-direction: column;}
+.flex-main {flex: 1}
 
 /* grid */
 .grid {display: grid;}
