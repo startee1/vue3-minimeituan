@@ -34,6 +34,7 @@ ul, li {list-style: none;padding: 0;margin: 0;}
 .flex-jc-sb {justify-content: space-between;}
 .flex-dir-col {flex-direction: column;}
 .flex-main {flex: 1}
+.flex-jc-end {justify-content: flex-end;}
 
 /* grid */
 .grid {display: grid;}

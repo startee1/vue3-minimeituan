@@ -74,6 +74,7 @@ onBeforeUnmount(() => {
     if( scrollBlock.value ){
       scrollBlock.value.removeEventListener('mousedown', addScroll)
       scrollBlock.value.removeEventListener('mouseup', removeScroll)
+      scrollBlock.value.removeEventListener('mouseleave', removeScroll)
     }
 })
 

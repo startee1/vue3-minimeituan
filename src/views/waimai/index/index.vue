@@ -61,6 +61,7 @@ const showFilter = () => {
         <img class="icon-xs" src="@/preview/image/back.png" @click="toIndex"/>
         <span class="location">北京</span>
         <img class="icon-xs" src="@/preview/image/location.png"/>
+        <el-icon><ArrowRight /></el-icon>
       </div>
       <div class="search">
         <div class="search-item" @click="toSearch" ref="search">
@@ -96,6 +97,7 @@ section {
   min-height: 100vh;
 }
 .location {
+  margin-left: 10px;
   font-size: 16px;
 }
 .search {

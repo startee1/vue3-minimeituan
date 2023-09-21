@@ -1,14 +1,23 @@
 <template>
   <div class="tabbar">
     <div class="list">
-      <router-link to="/">
+      <router-link :to="{ name:'waimaiIndex' }">
         <img src="@/preview/image/Birds.png"/>
         <div class="title">hello</div>
       </router-link>
     </div>
-    <div class="list"></div>
-    <div class="list"></div>
-    <div class="list"></div>
+    <div class="list">
+      <router-link :to="{ name:'waimaiOrder' }">
+        <img src="@/preview/image/Birds.png"/>
+        <div class="title">订单</div>
+      </router-link>
+    </div>
+    <div class="list">
+      <router-link to="/">
+        <img src="@/preview/image/Birds.png"/>
+        <div class="title">其他</div>
+      </router-link>
+    </div>
   </div>
 </template>
 

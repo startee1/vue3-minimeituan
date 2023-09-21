@@ -5,6 +5,7 @@ import WaimaiIndex from '../views/waimai/index/Index.vue'
 import WaimaiSearch from '../views/waimai/search/Search.vue'
 import WaimaiShop from '../views/waimai/shop/Shop.vue'
 import WaimaiShopType from '../views/waimai/shopType/ShopType.vue'
+import WaimaiOrder from '../views/waimai/order/Order.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
           path: 'shoptype',
           name: 'waimaiShopType',
           component: WaimaiShopType
+        },
+        {
+          path: 'order',
+          name: 'waimaiOrder',
+          component: WaimaiOrder
         }
       ],
     },

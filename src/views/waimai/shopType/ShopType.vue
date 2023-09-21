@@ -58,7 +58,7 @@ const onSearchRoute = () => {
             <SortFilter v-if="sort_type == 'sort'"/>
             <SpeedFilter v-else-if="sort_type == 'speed'"/>
             <ALLFilter v-else-if="sort_type == 'all'"/>
-          </el-drawer>
+          </el-drawer> 
         </section>
       </section>
     </main>
@@ -84,12 +84,14 @@ main {
   .shop-type-item {
     background-color:#fff;
     position: relative;
-    padding: 10px;
     height: 100%;
     top: -10px;
     border-radius: 10px 10px 0 0;
     flex: 1;
     overflow: hidden;
+    // &>section{
+    //   padding: 5px 10px;
+    // }
   }
   .nav {
     overflow: hidden;
@@ -100,6 +102,7 @@ main {
   }
   .flex-main {
     overflow: scroll;
+    background: var(--color-background-grey);
   }
 }
 .search-item {
