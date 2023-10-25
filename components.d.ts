@@ -7,22 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Cart: typeof import('./src/components/Cart.vue')['default']
     Comment: typeof import('./src/components/Comment.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
-    ElHr: typeof import('element-plus/es')['ElHr']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElPopover: typeof import('element-plus/es')['ElPopover']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRate: typeof import('element-plus/es')['ElRate']
     ElSlider: typeof import('element-plus/es')['ElSlider']
-    GoodLists: typeof import('./src/components/GoodLists.vue')['default']
     GoodsChoice: typeof import('./src/components/GoodsChoice.vue')['default']
     GoodsLists: typeof import('./src/components/GoodsLists.vue')['default']
     MultiSettle: typeof import('./src/components/MultiSettle.vue')['default']

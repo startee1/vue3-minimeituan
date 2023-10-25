@@ -7,6 +7,9 @@
   const toIndex = () => {
     router.push({ name: 'waimaiIndex' })
   }
+  const search = () => {
+    alert('搜索结果为空')
+  }
 </script>
 
 
@@ -20,7 +23,7 @@
           <img class="icon-xs icon" src="@/preview/image/search.png">
           <div class="tips flex">
             <div>|</div>
-            <div class="tips-words">搜索</div>
+            <div class="tips-words" @click="search">搜索</div>
           </div>
         </div>
       </div>
@@ -60,7 +63,7 @@ section {
     width: 85%;
     outline: none;
     border: none;
-    font-size: 6px;
+    font-size: 12px;
   }
   .icon{
     position: absolute;
@@ -74,7 +77,7 @@ section {
     top: 5%;
     line-height: 200%;
     width: 40px;
-    font-size: 3px;
+    font-size: 12px;
     text-align: center;
     border-radius: 26px;
     &>div {

@@ -1,7 +1,26 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+const props = defineProps<{choice: any}>()
 const emit = defineEmits<{
-  close: []
+  close: [],
+  choice: [price:any,choice:any]
 }>()
+const countPrice = ref(0)
+const countName = ref<any[]>([])
+const addChoice = (parent:any, value:any) => {
+  countPrice.value += value.price
+  countName.value = countName.value.filter((i:any) => {
+    return i.parent != parent
+  })
+  countName.value.push({parent,price: value.name})
+}
+const handlerChoice = () => {
+  emit('choice',countPrice.value,countName.value)
+}
+onMounted(() => {
+  // console.log(props.choice)
+})
 </script>
 
 <template>
@@ -9,28 +28,26 @@ const emit = defineEmits<{
   <div class="goods-choice" @click.stop="emit('close')">
     <div class="my-goods-details" @click.stop>
       <div class="my-goods-choice">
-        <div class="goods-title">美味</div>
+        <div class="goods-title">选择</div>
         <div class="goods-choice-item">
-          <div class="goods-choice-title">分量</div>
-          <div class="goods-choice-list">
-            <span class="goods-choice-name">零食</span>
-            <span class="goods-choice-money">￥10</span>
-          </div>
-          <div class="goods-choice-list">
-            <span class="goods-choice-name">零食</span>
-            <span class="goods-choice-money">￥10</span>
+          <div v-for="c in props.choice" :key="c.name">
+            <div class="goods-choice-title">{{ c.name }}</div>
+            <div class="goods-choice-list" v-for="child in c.children" :key="child.name" @click="addChoice(c.name,child)">
+              <span class="goods-choice-name">{{ child.name }}</span>
+              <span class="goods-choice-money">￥{{ child.price }}</span>
+            </div>
           </div>
         </div>
       </div>
       <div class="my-goods-select">
-        <div>已选规格：300kg、ok</div>
+        <div>已选规格：<span v-for="val in countName" :key="val.parent">{{ val.price }} 、</span></div>
       </div>
       <div class="my-goods-count">
         <div class="count-left">
-          <span class="count-info1">总计</span><span class="count-info2">$11.8</span>
+          <span class="count-info1">总计</span><span class="count-info2">￥{{ countPrice }}</span>
         </div>
         <div>
-          <div class="count-right">
+          <div class="count-right" @click="handlerChoice">
             <span class="count-info3">+</span><span class="count-info4">加入购物车</span>
           </div>
           <!-- <div><el-input-number size="small"/></div> -->

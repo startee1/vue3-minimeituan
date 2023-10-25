@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GoodsLists from '@/components/GoodsLists.vue';
 import ShopCart from '@/components/ShopCart.vue';
-import { ref } from 'vue';
+import axios from 'axios';
+import config from '@/config'
+import { ref, watch } from 'vue';
 
+const props = defineProps<{id: number}>()
 const menu_type = ref<string>('') // 菜单目录类型
 
 const emit = defineEmits<{
@@ -12,44 +15,64 @@ const emit = defineEmits<{
 
 const onTypeChange = (type:string) => {
   menu_type.value = type
-  window.location = `#${type}`
+  window.location= `#${type}`  as Location | (string & Location)
 }
+const typelist = ref<any[]>([])
+const goodslist = ref<any[]>([])
+const getGoods = (id:any) => {
+  axios.get(config.URLPRE+'/front/menu',{params:{id}})
+  .then(res => {
+    let menu = res.data.data.menu
+    let goods = res.data.data.goods
+    for (let i = 0; i < menu.length; i++){
+      typelist.value.push(menu[i].name)
+    }
+    let tem = []
+    for (let j = 0; j < goods.length; j++){
+      let index = -1;
+      for(let k = 0; k < tem.length; k++){
+        if(tem[k].id == goods[j].menuType){
+          index = k
+          break
+        }
+      }
+      if(index == -1){
+        for(let t = 0; t < menu.length; t++){
+          if (menu[t].id == goods[j].menuType){
+            tem.push({id: goods[j].menuType,name: menu[t].name, children:[goods[j]]})
+            break;
+          }
+        }
+      }else{
+        tem[index].children.push(goods[j])
+      }
+    }
+    goodslist.value = tem
+  })
+}
+watch(() => props.id,
+  (newval) => {
+    if (newval)
+    getGoods(newval)
+  },
+  {immediate:true}
+)
+
 </script>
 
 <template>
   <div class="menu flex">
     <div class="type">
-      <div class="type-list" :class="{'type-this': menu_type == '手机'}" @click="onTypeChange('手机')">手机</div>
-      <div class="type-list" :class="{'type-this': menu_type == '零食'}" @click="onTypeChange('零食')">零食</div>
-      <div class="type-list" :class="{'type-this': menu_type == '外卖'}" @click="onTypeChange('外卖')">外卖</div>
+      <div class="type-list" v-for="m in typelist" :key="m" :class="{'type-this': menu_type == m}" @click="onTypeChange(m)">{{ m }}</div>
     </div>
     <div class="goods">
-      <div id="手机">
-        <div class="title">手机</div>
+      <div v-for="g in goodslist" :key="g.name" :id="g.name">
+        <div class="title">{{ g.name }}</div>
         <div class="goods-list">
-          <GoodsLists @open-goods="(id) => emit('openGoods', id)"/>
-          <GoodsLists />
+          <GoodsLists v-for="child in g.children" :key="child.id" :goods="child" @open-goods="() => emit('openGoods', child)"/>
         </div>
       </div>
-      <div id="零食">
-        <div class="title">零食</div>
-        <div class="goods-list">
-          <GoodsLists @open-goods="(id) => emit('openGoods', id)"/>
-          <GoodsLists />
-          <GoodsLists />
-          <GoodsLists />
-          <GoodsLists />
-          <GoodsLists />
-          <GoodsLists />
-        </div>
-      </div>
-      <div id="外卖">
-        <div class="title">外卖</div>
-        <div class="goods-list">
-          <GoodsLists @open-goods="(id) => emit('openGoods', id)"/>
-          <GoodsLists />
-        </div>
-      </div>
+      <div style="height: 100px;"></div>
     </div>
     <ShopCart @open-settle="emit('openSettle')"/>
   </div>

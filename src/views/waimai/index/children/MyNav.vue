@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DEVICE_TYPE, MOBILE, PC } from '@/utils/Common'
-import { ref, onMounted, onBeforeUnmount, inject, watch, Ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount, inject, watch } from 'vue'
+import type {Ref} from 'vue'
 
 const myNav = ref<HTMLElement>() // 搜索框
 const myNavVisible = ref(false) // 默认搜索框是否被遮挡
@@ -9,22 +10,22 @@ const emits = defineEmits(["onShowFilter"])
 
 // 变相监听全局滚动事件
 watch(scrollTop as any, () => {
-  let myNavLocation = myNav.value.getBoundingClientRect()
+  let myNavLocation = myNav.value!.getBoundingClientRect()
   // console.log( scrollTop,myNavLocation)
-  if( scrollTop.value > myNavLocation.bottom + myNavLocation.height && myNavVisible.value === false ){
+  if( scrollTop!.value > myNavLocation.bottom + myNavLocation.height && myNavVisible.value === false ){
     myNavVisible.value = true
-  }else if( scrollTop.value <= myNavLocation.bottom + myNavLocation.height && myNavVisible.value === true ){
+  }else if( scrollTop!.value <= myNavLocation.bottom + myNavLocation.height && myNavVisible.value === true ){
     myNavVisible.value = false
   }
 })
 
 
-const scrollBlock = ref(null) // nav水平滚动框
+const scrollBlock = ref<HTMLElement>() // nav水平滚动框
 
 let startX = 0
 let endX = 0;
 let moveDistance = 0
-const onMouseMove = (event) => {
+const onMouseMove = (event:any) => {
   if(scrollBlock.value){
     let realMove = event.clientX - startX
     endX = moveDistance + realMove
@@ -33,7 +34,7 @@ const onMouseMove = (event) => {
 }
  
 // 添加滚动事件监听
-const addScroll = (event) => {
+const addScroll = (event:any) => {
   if(scrollBlock.value){
     startX = event.clientX;
     scrollBlock.value.addEventListener('mousemove', onMouseMove)
@@ -46,10 +47,10 @@ const removeScroll = () => {
       scrollBlock.value.removeEventListener('mousemove', onMouseMove)
       let trueMove = scrollBlock.value.style.transform.slice(12,-13)
       let maxScrollX = scrollBlock.value.scrollWidth - scrollBlock.value.offsetWidth
-      if(trueMove > 0) {
+      if(Number(trueMove) > 0) {
         moveDistance = 0
         scrollBlock.value.style.transform = `translate3d(${moveDistance},0,0)`
-      }else if(scrollBlock.value.scrollWidth - scrollBlock.value.parentElement.scrollWidth <  trueMove * -1){
+      }else if(scrollBlock.value.scrollWidth - scrollBlock.value.parentElement!.scrollWidth <  Number(trueMove) * -1){
         moveDistance = maxScrollX * -1
         scrollBlock.value.style.transform = `translate3d(${moveDistance}px,0,0)`
       }

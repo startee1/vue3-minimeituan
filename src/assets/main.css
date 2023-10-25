@@ -4,9 +4,9 @@ a {text-decoration: none;}
 ul, li {list-style: none;padding: 0;margin: 0;}
 
 .top {padding: 5px 10px;}
-.icon-xs {width: 15px;height: 15px;}
-.icon-ms {width: 20px;height: 20px;}
-.icon-md {width: 30px;height: 30px;}
+.icon-xs {width: 15px;height: 15px;border-radius: 15px;}
+.icon-ms {width: 20px;height: 20px;border-radius: 20px;}
+.icon-md {width: 30px;height: 30px;border-radius: 30px;}
 
 /* font-size */
 .fs-xs {font-size: 12px;}

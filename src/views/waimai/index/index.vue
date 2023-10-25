@@ -5,7 +5,9 @@ import MyNav from './children/MyNav.vue'
 import ShopList from './children/ShopList.vue'
 import MyFilter from './children/MyFilter.vue'
 import Tabbar from '@/components/Tabbar.vue';
-import { inject, watch, ref, Ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { inject, watch, ref } from 'vue';
+import type { Ref } from 'vue';
 
 const search = ref<HTMLElement>() // 搜索框
 const searchVisible = ref(false) // 默认搜索框是否被遮挡
@@ -14,18 +16,17 @@ const reachBottom = inject<Ref<boolean>>('reachBottom') // 接收屏幕到底时
 const filterShow = ref(false)
 
 // 变相监听全局滚动事件
-watch(scrollTop , () => {
-  let searchLocation = search.value.getBoundingClientRect()
-  if( scrollTop.value > searchLocation.bottom + searchLocation.height && searchVisible.value === false ){
+watch(scrollTop! , () => {
+  let searchLocation = search.value!.getBoundingClientRect()
+  if( scrollTop!.value > searchLocation.bottom + searchLocation.height && searchVisible.value === false ){
     searchVisible.value = true
-  }else if( scrollTop.value <= searchLocation.bottom + searchLocation.height && searchVisible.value === true ){
+  }else if( scrollTop!.value <= searchLocation.bottom + searchLocation.height && searchVisible.value === true ){
     searchVisible.value = false
   }
 })
-watch(reachBottom, (value) => {
-  console.log(value)
-  if(reachBottom.value == true){
-    console.log('加载中...')
+watch(reachBottom!, () => {
+  if(reachBottom!.value == true){
+    ElMessage.info('到底了')
   }
 })
 
@@ -56,6 +57,7 @@ const showFilter = () => {
         </div>
       </div>
     </div>
+    <ElMessage style="display: none;"/>
     <header class="bg-mt">
       <div class="flex flex-ai-midline top">
         <img class="icon-xs" src="@/preview/image/back.png" @click="toIndex"/>

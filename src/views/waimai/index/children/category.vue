@@ -1,34 +1,41 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-
-
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import config from '@/config'
 interface IFoodType {
-  text: string,
-  img: string,
+  name: string,
+  image: string,
   id: number
 }
 
-const foodMainTypeArray:IFoodType[] = [
-  {id: 0,text: 'shop',img:'/public/favicon.ico'},
-  {id: 2,text: 'shop',img:'/public/favicon.ico'},
-  {id: 3,text: 'shop',img:'/public/favicon.ico'},
-  {id: 4,text: 'shop',img:'/public/favicon.ico'},
-  {id: 5,text: 'shop',img:'/public/favicon.ico'},
-]
-const foodViceTypeArray:IFoodType[] = [
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-  {id: 1,text: 'zxc',img:'/public/favicon.ico'},
-]
+const foodMainTypeArray = ref<IFoodType[]>([])
+const foodViceTypeArray = ref<IFoodType[]>([])
 
 const router = useRouter()
 
 const onShopType = () => {
   router.push({ name: 'waimaiShopType', params: { id: 3 } })
 }
+// 获取类型
+const getType = () => {
+  axios.get(config.URLPRE + '/type/list') 
+  .then(res => {
+    let result = res.data
+    for (let i = 0; i < result.data.length; i++) {
+      if (i < 4) {
+        foodMainTypeArray.value.push(result.data[i])
+      }else{
+        foodViceTypeArray.value.push(result.data[i])
+      }
+    }
+  })
+}
+
+onMounted(() => {
+  getType()
+})
+
 
 </script>
 
@@ -37,20 +44,16 @@ const onShopType = () => {
     <template v-if="foodMainTypeArray.length > 0">
       <div class="grid" @click="onShopType">
         <div v-for="mt in foodMainTypeArray" :key="mt.id" class="food-type" >
-          <img :src="mt.img" class="icon-md"/>
-          <div>{{ mt.text }}</div>
+          <img :src="config.URLPRE + '/public/images/'+mt.image" class="icon-md" v-if="mt.image" style="background-color: #fff;"/>
+          <div>{{ mt.name }}</div>
         </div>
       </div>
     </template>
     <template v-if="foodViceTypeArray.length > 0">
       <div class="grid" style="">
         <div v-for="mv in foodViceTypeArray" :key="mv.id" class="food-type" >
-          <img :src="mv.img" class="icon-ms"/>
-          <div>{{ mv.text }}</div>
-        </div>
-        <div class="food-type" >
-          <img src="@/preview/image/Birds.png" class="icon-ms"/>
-          <div>更改</div>
+          <img :src="config.URLPRE + '/public/images/'+mv.image" class="icon-ms" v-if="mv.image" style="background-color: #fff;"/>
+          <div>{{ mv.name }}</div>
         </div>
       </div>
     </template>
@@ -59,7 +62,9 @@ const onShopType = () => {
 
 <style scoped lang="less">
 .grid {
-  grid-template-columns: repeat(5, 1fr);grid-gap: 2px;
+  padding: 10px 20px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2px;
 }
 .food-type {
   text-align: center;

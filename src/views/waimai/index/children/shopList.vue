@@ -1,47 +1,59 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import config from '@/config'
 
-interface IShopPreview {
-  id: number,
-  image?: string,
-  name: string,
-  score: number,
-  month_sales: number,
-  per_average_consume: number,
-  special_delivery?: string,
-  min_start_delivery: number,
-  delivery_price: number,
-  delivery_time: number,
-  delivery_distance: string,
-  rank?: string,
-  discounts?: string[]
+interface IShop {
+  id?: number                 // 唯一标识
+  myshow?: number             // 是否展示
+  shopid?: number             // 商铺账号信息
+  title?: string              // 商品名称
+  address?: string            // 地址
+  phone?: string              // 电话
+  typemainid?: number         // 店铺主分类
+  typeviceid?: number         // 店铺次分类
+  preview?: string            // 标语
+  info?: string               // 简介
+  deliveryPrice?: number      // 配送费
+  minPriceDelivery?: number   // 起始配送费
+  startTime?: string          // 起始营业时间
+  endTime?: string            // 结束营业时间
+  logo?: string               // 店铺头像
+  background?: string         // 店铺背景
+  yinyezhizhao?: string       // 营业执照
+  canyinxuke?: string         // 餐饮许可证
 }
 
 const router = useRouter()
 const viewShop = (id: number) => {
   router.push({name: 'waimaiShop', query: {id}}) 
 }
-
-const shop_list:IShopPreview[] = [
-  {id: 1,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 2,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 3,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 4,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-  {id: 5,name: '巴拉巴拉',score: 4.5,month_sales: 4000,per_average_consume: 40,min_start_delivery: 0,delivery_price: 0, delivery_time: 0,delivery_distance: '1km'},
-] 
+// 获取商店
+const getShop = () => {
+  axios.get(config.URLPRE + '/front/shoplist') 
+  .then(res => {
+    let result = res.data
+    shop_list.value = result.data
+  })
+}
+const shop_list = ref<IShop[]>([]) 
+onMounted(() => {
+  getShop()
+})
 </script>
 
 <template>
   <div class="list">
-    <div class="shoplist flex" v-for="shop in shop_list" :key="shop.id" @click="viewShop(shop.id)">
-      <div class="image"></div>
+    <div class="shoplist flex" v-for="shop in shop_list" :key="shop.id" @click="viewShop(shop.id!)">
+      <div class="image"><img :src="config.URLPRE+shop.logo!.slice(4)" style="width: 100%;height: 100%;"/></div>
       <div class="main">
-        <div class="name">{{ shop.name }}</div>
+        <div class="name">{{ shop.title }}</div>
         <div class="info1 flex flex-jc-sb">
           <div class="info1-left flex">
             <div class="score">4.5分</div>
-            <div class="sellcount">月售{{ shop.month_sales }}+</div>
-            <div class="priceavr">人均￥{{ shop.per_average_consume }}</div>
+            <div class="sellcount">月售{{ 30 }}+</div>
+            <div class="priceavr">人均￥{{ 30 }}</div>
           </div>
           <div class="info1-right">
             <div class="delivery">美团专送</div>
@@ -49,12 +61,12 @@ const shop_list:IShopPreview[] = [
         </div>
         <div class="info2 flex flex-jc-sb">
           <div class="info2-left flex">
-            <div class="startmoney">起送 ￥{{ shop.min_start_delivery }}</div>
-            <div class="deliverymoney">配送 约￥{{ shop.delivery_price }}</div>
+            <div class="startmoney">起送 ￥{{ shop.minPriceDelivery }}</div>
+            <div class="deliverymoney">配送 约￥{{ 0 }}</div>
           </div>
           <div class="info2-right flex">
-            <div class="deliverytime">{{ shop.delivery_time }}分钟</div>
-            <div class="distance">{{ shop.delivery_distance }}</div>
+            <div class="deliverytime">{{ 20 }}分钟</div>
+            <div class="distance">{{ '20km' }}</div>
           </div>
         </div>
         <div class="info3">

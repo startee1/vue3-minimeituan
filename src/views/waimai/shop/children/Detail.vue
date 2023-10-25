@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const props = defineProps<{address:string,startTime: string,endTime: string,phone:string}>()
 </script>
 
 <template>
@@ -6,12 +7,12 @@
     <div class="info">
       <div>
         <span><el-icon :size="16"><Location /></el-icon></span>
-        <span class="info-text">地址</span>
+        <span class="info-text">{{ props.address }}</span>
         <el-popover
           placement="bottom"
           :width="200"
           trigger="click"
-          content="this is content, this is content, this is content"
+          :content="props.phone"
         >
           <template #reference>
             <span><el-icon :size="16"><PhoneFilled /></el-icon></span>
@@ -21,7 +22,7 @@
     </div>
     <div class="info">
       <span><el-icon :size="16"><Pointer /></el-icon></span>
-      <span class="info-text">配送时间：123132123132</span>
+      <span class="info-text">配送时间：{{ props.startTime }} - {{ props.endTime }}</span>
     </div>
   </div>
 </template>

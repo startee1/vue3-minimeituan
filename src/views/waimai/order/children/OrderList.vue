@@ -8,10 +8,10 @@ import GoodsList from './GoodsList.vue'
     <main>
       <section class="order-item">
         <div class="order-top flex">
-          <div class="order-top-left"><img/></div>
+          <div class="order-top-left"></div>
           <div class="order-top-right flex-main">
             <div class="order-info1 flex">
-              <div class="order-shop flex-main">店名 &gt;</div>
+              <div class="order-shop flex-main">样例 &gt;</div>
               <div class="order-status">
                 <span>已完成</span>
                 <!-- <span>待配送</span> -->

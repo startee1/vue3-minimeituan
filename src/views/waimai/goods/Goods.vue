@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Comment from '@/components/Comment.vue'
 import GoodsChoice from '@/components/GoodsChoice.vue'
-
+import config from '@/config';
+import { useCartStore } from '@/stores'
+import { onMounted } from 'vue';
 
 const css_menu = ref<string>('menu') // 导航分类
-
+const {addCart} = useCartStore()
 const props = defineProps<{
-  goods_id: number
+  goods_info: any
 }>()
 const emit = defineEmits<{
   closeGoods: []
@@ -19,7 +20,25 @@ const goods_choice_container = ref<boolean>(false)
 const onMenuClick = (type: string) => {
   css_menu.value = type
 }
-
+const takeChoice = (t:any,b:any) => {
+  goods_choice_container.value = false
+  let choiceName = ''
+  for (let i = 0; i < b.length; i++) {
+    choiceName += b[i].name + '，'
+  }
+  choiceName = choiceName.slice(-1)
+  let totalInfo = {
+    count: 1,
+    id: props.goods_info.id,
+    title: props.goods_info.title,
+    choiceName,
+    price: props.goods_info.price + t
+  }
+  addCart(totalInfo)
+}
+onMounted(() => {
+  // console.log(props.goods_info)
+})
 
 </script>
 
@@ -33,13 +52,13 @@ const onMenuClick = (type: string) => {
     <main>
       <section>
         <div class="goods-logo">
-          <img/>
+          <img :src="config.URLPRE+props.goods_info.logo.slice(4)"/>
         </div>
         <div class="info">
           <div class="info-top flex">
             <div class="info-left">
-              <div class="info-title">啊十九大看来是</div>
-              <div class="info-size"><span>1人份</span></div>
+              <div class="info-title">{{ props.goods_info.title }}</div>
+              <div class="info-size"><span>{{ props.goods_info.size }}</span></div>
               <div class="info-rank"><span>店内排行第一</span></div>
               <div class="info-text flex">
                 <div class="info-text-1">月售400+</div>
@@ -64,12 +83,12 @@ const onMenuClick = (type: string) => {
           <!-- <div class="menu-title" :class="{'menu-this': css_menu == 'comment'}" @click="onMenuClick('comment')">评价</div> -->
         </nav>
         <div class="detail-info flex">
-          <div class="detail-left">比例巴拉阿拉山口大家阿萨德:</div>
-          <div class="detail-right">大家收到货撒了大家好索拉卡等哈收纳仔细，名称那些，怎么VB财政局很正常科技了哈v最大山卡拉激发很大张卡拉法基很大制卡机发哈</div>
+          <div class="detail-left">分量:</div>
+          <div class="detail-right">1人份</div>
         </div>
         <div class="detail-info flex">
-          <div class="detail-left">比例巴拉阿拉山口大家阿萨德:</div>
-          <div class="detail-right">大家收到货撒了大家好索拉卡等哈收纳仔细，名称那些，怎么VB财政局很正常科技了哈v最大山卡拉激发很大张卡拉法基很大制卡机发哈</div>
+          <div class="detail-left">数目:</div>
+          <div class="detail-right">1</div>
         </div>
       </section>
       <section>
@@ -79,15 +98,15 @@ const onMenuClick = (type: string) => {
         <div class="pre-comment flex">
           <div class="pre-comment-left"><img/></div>
           <div class="pre-comment-mid">
-            <div class="pre-comment-name">name</div>
-            <div class="pre-comment-word">nice-bro</div>
+            <div class="pre-comment-name">H2Kj***3n1</div>
+            <div class="pre-comment-word">好评</div>
           </div>
           <div class="pre-comment-right">2022.1.2</div>
         </div>
         <div class="more-comment" @click="emit('openAllComment')">更多<el-icon><ArrowRight /></el-icon></div>
       </section>
     </main>
-    <GoodsChoice @close="goods_choice_container = false" v-if="goods_choice_container"/>
+    <GoodsChoice @close="goods_choice_container = false" @choice="takeChoice" :choice="JSON.parse(props.goods_info.choice)" v-if="goods_choice_container"/>
   </div>
 </template>
 

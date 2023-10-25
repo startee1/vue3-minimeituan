@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import config  from '@/config';
+const props = defineProps<{title: string,preview: string,info:string,logo:string}>()
 const is_open = ref<boolean>(false)
 </script>
 
 <template>
   <div class="introduce">
-    <div class="name">外卖好店</div>
+    <div class="name">{{ props.title }}</div>
     <div class="info1 flex flex-ai-midline">
       <div class="score">4.7分</div>
       <div>配送 28分钟</div>
       <div>月售2000+</div>
     </div>
-    <div class="brief" v-if="!is_open">精选细心制作</div>
+    <div class="brief" v-if="!is_open">{{ props.preview }}</div>
 
     <div v-if="is_open">
       <div class="title">公告</div>
-      <div class="text">精选细心制作</div>
+      <div class="text">{{ props.info }}</div>
     </div>
     <!-- LOGO -->
-    <div class="logo">√</div>
+    <div class="logo"><img :src="config.URLPRE+props.logo.slice(4)" style="width: 100%;height: 100%;"/></div>
     <!-- 展开 -->
     <div class="open" @click="is_open = !is_open">√</div>
   </div>
@@ -56,6 +57,7 @@ const is_open = ref<boolean>(false)
   height: 60px;
   border-radius: 5px;
   background-color: #345;
+  overflow: hidden;
 }
 .open {
   position: absolute;

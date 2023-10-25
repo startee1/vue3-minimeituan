@@ -6,8 +6,8 @@ const myScrollTop = ref(0)
 const reachBottom = ref(false)
 provide("scrollTop", myScrollTop)
 provide("reachBottom", reachBottom)
-const onScroll = (event) => {
-  const { scrollTop, scrollHeight, clientHeight } = container.value // 获取滚动高度和内容高度
+const onScroll = (event:any) => {
+  const { scrollTop, scrollHeight, clientHeight } = container.value! // 获取滚动高度和内容高度
   if (scrollTop + clientHeight >= scrollHeight - 30 && reachBottom.value == false) {
     reachBottom.value = true
   } else if (scrollTop + clientHeight < scrollHeight - 30 && reachBottom.value == true) {
@@ -17,7 +17,7 @@ const onScroll = (event) => {
 }
 onMounted(() => {
   // 监听滚动事件
-  container.value.addEventListener('scroll', onScroll)
+  container.value!.addEventListener('scroll', onScroll)
 })
 </script>
 

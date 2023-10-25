@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import { useCartStore } from '@/stores'
+import config from '@/config';
 interface Props {
   closeable?: boolean
 }
-
+const { cart,clearMe } = useCartStore()
 const props = withDefaults(defineProps<Props>(), {
   closeable: false,
 })
-
+const countmoney = ref(0)
+const initmoney = ref(0)
+for(let i = 0; i < cart.length;i++){
+  countmoney.value += (cart[i].price)*(cart[i].count)*(cart[i].discount)*0.1
+  initmoney.value += (cart[i].price)*(cart[i].count)
+}
 const address = ref<number>(0) // 地址
 const notes = ref<string>('') // 备注
 const tableware_count = ref<number>(0) // 餐具类型
@@ -22,7 +28,10 @@ const show_tableware = ref<boolean>(false)
 const emit = defineEmits<{
   close: []
 }>()
-
+const submitOrder = () => {
+  emit('close')
+  clearMe()
+}
 </script>
 
 <template>
@@ -60,37 +69,37 @@ const emit = defineEmits<{
       </section>
       <section>
         <div class="shop">
-          <div class="shop-name">蛋糕店</div>
+          <div class="shop-name">订单</div>
           <el-divider/>
-          <div class="shop-food">
+          <div class="shop-food" v-for="c in cart" :key="c">
             <div class="food-info flex">
               <div class="info-main flex">
                 <div class="food-info-logo">
-                  <img/>
+                  <img :src="config.URLPRE+c.logo.slice(4)"/>
                 </div>
                 <div class="food-info-detail">
-                  <div class="food-info-name">美味</div>
-                  <div class="food-info-weight">3克</div>
-                  <div class="food-info-count">×3</div>
+                  <div class="food-info-name">{{ c.title }}</div>
+                  <div class="food-info-weight">{{ c.size }}</div>
+                  <div class="food-info-count">×{{ c.count }}</div>
                 </div>
               </div>
-              <div class="info-right">231</div>
+              <div class="info-right">￥ {{ c.price*c.count }}</div>
             </div>
             <div class="food-info flex">
               <div class="info-main">打包费</div>
-              <div class="info-right">1</div>
+              <div class="info-right">{{ c.packingCharges || 0 }}￥</div>
             </div>
             <div class="food-info flex">
               <div class="info-main">配送费</div>
-              <div class="info-right">2</div>
+              <div class="info-right">{{ c.deliveryPrice || 0 }}￥</div>
             </div>
           </div>
           <el-divider/>
           <div class="shop-price flex">
-            <div class="shop-price-discount fs-xs">已优惠￥21</div>
+            <!-- <div class="shop-price-discount fs-xs">已优惠￥21</div> -->
             <div class="shop-price-count">
               <span class="fs-sm">共计</span>&nbsp;
-              <span class="fs-lg">%27</span>
+              <span class="fs-lg">￥{{ countmoney }}</span>
             </div>
           </div>
         </div>
@@ -111,10 +120,10 @@ const emit = defineEmits<{
     <section class="submit-block">
       <section class="submit flex">
         <div class="submit-price">
-          <div class="submit-price-count">￥123</div>
-          <div class="submit-price-discount">12</div>
+          <div class="submit-price-count">￥{{ countmoney }}</div>
+          <div class="submit-price-discount">{{ initmoney }}</div>
         </div>
-        <div class="submit-button">提交订单</div>
+        <div class="submit-button" @click="submitOrder">提交订单</div>
       </section>
     </section>
     <!-- 配送地址弹窗 -->
@@ -332,6 +341,7 @@ main {
     }
     .submit-price-discount {
       color: var(--color-text-grey);
+      text-decoration: line-through;
     }
     .submit-button {
       background-color: var(--color-background-meituan);

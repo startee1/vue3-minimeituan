@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Index from '../views/index/Index.vue'
+import Index from '../views/index/index.vue'
 import WaimaiIndex from '../views/waimai/index/Index.vue'
 import WaimaiSearch from '../views/waimai/search/Search.vue'
 import WaimaiShop from '../views/waimai/shop/Shop.vue'
@@ -9,7 +9,7 @@ import WaimaiOrder from '../views/waimai/order/Order.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior (to, from) {
     if (to.name == 'waimaiShop' && from.name == 'waimaiShop') {
       document.getElementById('myApp')!.scrollTop = 400
     } else {

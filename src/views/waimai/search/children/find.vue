@@ -1,5 +1,4 @@
-<script setup>
-</script>
+
 
 <template>
   <div class="block">
@@ -11,7 +10,8 @@
       </div>
     </div>
     <ul class="flex flex-wrap">
-      <li v-for="i in 10">{{ i+'asd' }}</li>
+      <li>鸡腿</li>
+      <li>盒饭</li>
     </ul>
   </div>
 </template>

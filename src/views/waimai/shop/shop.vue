@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Ref, inject, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { inject, ref, watch } from 'vue';
+import type { Ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Introduce from './children/Introduce.vue'
 import Menu from './children/Menu.vue'
 import Comment from '@/components/Comment.vue'
@@ -8,27 +9,74 @@ import Settle from '@/components/Settle.vue'
 import Detail from './children/Detail.vue'
 import Goods from '../goods/Goods.vue'
 import WaimaiSearch from './children/Search.vue'
+import { onMounted,reactive } from 'vue';
+import axios from 'axios';
+import config from '@/config'
+
+interface IShop {
+  id?: number                 // 唯一标识
+  myshow?: number             // 是否展示
+  shopid?: number             // 商铺账号信息
+  title?: string              // 商品名称
+  address?: string            // 地址
+  phone?: string              // 电话
+  typemainid?: number         // 店铺主分类
+  typeviceid?: number         // 店铺次分类
+  preview?: string            // 标语
+  info?: string               // 简介
+  deliveryPrice?: number      // 配送费
+  minPriceDelivery?: number   // 起始配送费
+  startTime?: string          // 起始营业时间
+  endTime?: string            // 结束营业时间
+  logo?: string               // 店铺头像
+  background?: string         // 店铺背景
+  yinyezhizhao?: string       // 营业执照
+  canyinxuke?: string         // 餐饮许可证
+}
+
 const router = useRouter()
+const route = useRoute()
 const scrollTop = inject<Ref<number>>('scrollTop') // 接收屏幕滚动高度
 const has_scroll = ref<boolean>(false) // 控制顶部样式
 const css_menu = ref<string>('menu') // 控制菜单栏顶部 css:class
 const show_goods = ref<boolean>(false) // 控制商品详情页
+const goods_info = ref() // 控制商品详情页
 const show_all_comment = ref<boolean>(false) // 控制商品所有评论页
 const show_settle = ref<boolean>(false) // 控制结算页
 const show_waimai_search = ref<boolean>(false) // 控制外卖搜索页
 const goods_id = ref<number>(0) // 商品 id
+const shopInfo = reactive<IShop>({
+  id: 0,
+  shopid: 0,
+  title: '',
+  address: '',
+  phone: '',
+  typemainid: 0,
+  typeviceid: 0,
+  preview: '',
+  info: '',
+  deliveryPrice: 0,
+  minPriceDelivery: 0,
+  startTime: '',
+  endTime: '',
+  logo: '',
+  background: '',
+  yinyezhizhao: '',
+  canyinxuke: '',
+})
 // 监听顶部栏滚动变化
-watch(scrollTop ,(val) => {
-  if(val > 0 && has_scroll.value == false) {
+watch(scrollTop! ,(val) => {
+  if(Number(val) > 0 && has_scroll.value == false) {
     has_scroll.value = true
-  }else if(val <= 0 && has_scroll.value == true) {
+  }else if(Number(val) <= 0 && has_scroll.value == true) {
     has_scroll.value = false
   }
 })
 const onCloseGoods = () => {
   show_goods.value = false
 }
-const onOpenGoods = () => {
+const onOpenGoods = (goods:any) => {
+  goods_info.value = goods
   show_goods.value = true
 }
 const onOpenAllCooment = () => {
@@ -44,7 +92,7 @@ const onCloseSettle = () => {
   show_settle.value = false
 }
 const onOpenWaimaiShopSearch = () => {
-  show_waimai_search.value = true
+  // show_waimai_search.value = true
 }
 const onCloseWaimaiShopSearch = () => {
   show_waimai_search.value = false
@@ -60,6 +108,21 @@ const onMenuClick = (type: string) => {
 const toWaimaiIndex = () => {
   router.push({ name: 'waimaiIndex' })
 }
+const getMyShop = (id:any) => {
+  axios.get(config.URLPRE+'/front/shop', {params:{id}})
+  .then(res => {
+    let result = res.data
+    for (let key of Object.keys(result.data)){
+      if(shopInfo?.[key] != undefined){
+        shopInfo[key] = result.data[key]
+      }
+    }
+  })
+}
+let id = route.query.id as string
+onMounted(() => {
+  getMyShop(id)
+})
 
 </script>
 
@@ -85,7 +148,7 @@ const toWaimaiIndex = () => {
     </div>
     <!-- 商品详情页 -->
     <transition mode="out-in" name="dialog">
-      <Goods v-if="show_goods" :goods_id="goods_id" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
+      <Goods v-if="show_goods" :goods_info="goods_info" @close-goods="onCloseGoods" @open-all-comment="onOpenAllCooment"/>
     </transition>
     <!-- 所有评论页 -->
     <div v-if="show_all_comment" class="full-screen" style="z-index: 1200;">
@@ -107,7 +170,7 @@ const toWaimaiIndex = () => {
     <main>
       <!-- 商铺简介 -->
       <section class="introduce">
-        <Introduce/>
+        <Introduce :title="shopInfo.title!" :info="shopInfo.info!" :preview="shopInfo.preview!" :logo="shopInfo.logo!"/>
       </section>
       <section>
         <nav class="menu-list">
@@ -117,11 +180,11 @@ const toWaimaiIndex = () => {
         </nav>
         <section class="menu-info">
           <!-- 菜单 -->
-          <Menu v-if="css_menu == 'menu'" @open-goods="onOpenGoods" @open-settle="onOpenSettle"/>
+          <Menu v-if="css_menu == 'menu'" @open-goods="onOpenGoods" @open-settle="onOpenSettle" :id="shopInfo.shopid!"/>
           <!-- 评论 -->
           <Comment v-else-if="css_menu == 'comment'"/>
           <!-- 店铺详情 -->
-          <Detail v-else-if="css_menu == 'detail'"/>
+          <Detail v-else-if="css_menu == 'detail'" :address="shopInfo.address!" :start-time="shopInfo.startTime!" :end-time="shopInfo.endTime!" :phone="shopInfo.phone!"/>
         </section>
       </section>
     </main>

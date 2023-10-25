@@ -1,5 +1,4 @@
-<script setup>
-</script>
+
 
 <template>
   <div class="block">
@@ -8,7 +7,10 @@
       <img class="icon-xs" src="@/preview/image/garbage.png"/>
     </div>
     <ul class="flex flex-wrap">
-      <li v-for="i in 10">{{ i+'asd' }}</li>
+      <li>鱼</li>
+      <li>饭团</li>
+      <li>美食</li>
+      <li>袋子</li>
     </ul>
   </div>
 </template>

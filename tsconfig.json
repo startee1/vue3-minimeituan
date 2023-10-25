@@ -1,6 +1,9 @@
 {
   "files": [],
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "suppressImplicitAnyIndexErrors": true,
+    "allowJs": true,
     "lib":["es2015","DOM"],
     "skipLibCheck": true,
     "baseUrl": "./", 

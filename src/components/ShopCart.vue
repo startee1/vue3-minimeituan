@@ -1,13 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+import { useCartStore } from '@/stores'
+import config from '@/config';
+import { onMounted, watch } from 'vue';
 
+const { cart,clearMe } = useCartStore()
 const emit = defineEmits<{
   openSettle: []
 }>()
-
+const totalMoney = ref(0)
 const num = ref<number>(0)
+const countbuy = ref<number>(0)
 const show_dialog = ref<boolean>(false)
+const clearCart = () => {
+  clearMe()
+}
+watch(cart,(newval)=>{
+  let money = 0
+  let buy = newval.length
+  for(let i = 0; i < newval.length; i++){
+    money+=newval[i].count * newval[i].price
+  }
+  countbuy.value = buy
+  totalMoney.value = money
+})
 </script>
 
 <template>
@@ -17,14 +33,14 @@ const show_dialog = ref<boolean>(false)
       <section class="cart-logo" @click="show_dialog = true">
         <div class="cart-logo-pic">
           <img src="@/preview/image/cart.png"/>
-          <div class="count-buy">1111</div>
+          <div class="count-buy">{{ countbuy }}</div>
         </div>
       </section>
       <section class="money flex flex-ai-midline" @click="show_dialog = true">
         <!-- <div class="empty-buy"><span class="count">￥29</span><span style="margin: 0 1px;">|</span><span class="car-money">预估配送费￥29</span></div> -->
         <div class="have-buy">
-          <div class="count">￥29</div>
-          <div class="car-money">预估配送费￥29</div>
+          <div class="count">￥{{ totalMoney }}</div>
+          <div class="car-money">预估配送费￥0</div>
         </div>
       </section>
       <section class="buy ">
@@ -36,63 +52,25 @@ const show_dialog = ref<boolean>(false)
     <div class="dialog" @click="show_dialog = false" v-if="show_dialog">
       <div class="dialog-info" @click.stop>
         <div class="dialog-top flex flex-jc-sb">
-          <div>打包费5.7</div>
-          <div class="c-grey">清空购物车</div>
+          <div>打包费1￥</div>
+          <div class="c-grey" @click="clearCart">清空购物车</div>
         </div>
         <hr>
         <div class="dialog-goods">
-          <div class="my-goods flex">
+          <div class="my-goods flex" v-for="c in cart" :key="c">
             <div class="my-goods-logo">
-              <img class="my-goods-logo-pic" />
+              <img class="my-goods-logo-pic" :src="config.URLPRE+c.logo.slice(4)"/>
             </div>
             <div class="my-goods-info">
-              <div class="my-goods-info-title" style="font-size: 16px;">划线</div>
-              <div class="my-goods-info-deal" style="font-size: 12px;">2人份</div> 
+              <div class="my-goods-info-title" style="font-size: 16px;">{{ c.title }}</div>
+              <div class="my-goods-info-deal" style="font-size: 12px;">1人份</div> 
               <div class="my-goods-info-bottom flex flex-jc-sb">
                 <div class="my-goods-info-left">
-                  <div class="my-goods-info-money"><span>Y29</span></div>
+                  <div class="my-goods-info-money"><span>￥{{ c.count*c.price }}</span></div>
                 </div>
                 <div class="my-goods-info-right">
                   <div class="my-goods-info-num">
-                    <el-input-number v-model="num" :min="1" :max="10" step-strictly size="small"  />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="my-goods flex">
-            <div class="my-goods-logo">
-              <img class="my-goods-logo-pic" />
-            </div>
-            <div class="my-goods-info">
-              <div class="my-goods-info-title" style="font-size: 16px;">划线</div>
-              <div class="my-goods-info-deal" style="font-size: 12px;">2人份</div> 
-              <div class="my-goods-info-bottom flex flex-jc-sb">
-                <div class="my-goods-info-left">
-                  <div class="my-goods-info-money"><span>Y29</span></div>
-                </div>
-                <div class="my-goods-info-right">
-                  <div class="my-goods-info-num">
-                    <el-input-number v-model="num" :min="1" :max="10" step-strictly size="small"  />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="my-goods flex">
-            <div class="my-goods-logo">
-              <img class="my-goods-logo-pic" />
-            </div>
-            <div class="my-goods-info">
-              <div class="my-goods-info-title" style="font-size: 16px;">划线</div>
-              <div class="my-goods-info-deal" style="font-size: 12px;">2人份</div> 
-              <div class="my-goods-info-bottom flex flex-jc-sb">
-                <div class="my-goods-info-left">
-                  <div class="my-goods-info-money"><span>Y29</span></div>
-                </div>
-                <div class="my-goods-info-right">
-                  <div class="my-goods-info-num">
-                    <el-input-number v-model="num" :min="1" :max="10" step-strictly size="small"  />
+                    <el-input-number v-model="c.count" :min="1" :max="10" step-strictly size="small"  />
                   </div>
                 </div>
               </div>

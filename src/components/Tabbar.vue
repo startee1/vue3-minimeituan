@@ -8,13 +8,13 @@ const other_show = ref<boolean>(false)
   <div class="tabbar">
     <div class="list">
       <router-link :to="{ name:'waimaiIndex' }">
-        <img src="@/preview/image/Birds.png"/>
-        <div class="title">hello</div>
+        <img src="@/preview/image/location.png"/>
+        <div class="title">主页</div>
       </router-link>
     </div>
     <div class="list">
       <router-link :to="{ name:'waimaiOrder' }">
-        <img src="@/preview/image/Birds.png"/>
+        <img src="@/preview/image/menu.png"/>
         <div class="title">订单</div>
       </router-link>
     </div>
@@ -56,7 +56,6 @@ const other_show = ref<boolean>(false)
   img {
     width: 30px;
     height: 30px;
-    background: #000;
   }
   .title {
     font-size: 15px;

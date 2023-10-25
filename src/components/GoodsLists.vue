@@ -1,25 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useCartStore } from '@/stores'
+import GoodsChoice from './GoodsChoice.vue';
+import config from '@/config';
 
 interface IGoods {
-  id?: number //asdsadasdasdsadsa补上
-  title: string
-  rank: string
-  pic: string
-  month_sales: number
-  nice_comment_percent: number
-  price: number
-  more_decide?: object
+  id?: number                           // 唯一标识符
+  shopid?: number                       // 所属商家
+  logo?: string                         // 商品图片
+  myshow?: 1 | 0                        // 商品是否展示
+  type?: string                         // 商品分类
+  title?: string                        // 商品名称
+  price?: number                        // 商品单个价格
+  singleSell?: 1 | 0                    // 商品是否单个可售
+  menuType?: string                     // 商品所属菜单列表
+  size?: string                         // 商品分量
+  isChoice?: 1 | 0                      // 商品是否可选规格
+  choice?: string                       // 商品可选规格内容
+  discount?: number                     // 商品折扣
+  packingCharges?: number               // 商品打包费用
+  goodsLogo?: '无' | '招牌' | '新品'     // 商品右上角 Logo
+  pubdate?: string                      // 商品发布日期
 }
+const {addCart} = useCartStore()
 
 const props = defineProps<{
-  goodsList?:IGoods[]
+  goods?:IGoods
 }>()
-let { goodsList } = props
+let { goods } = props
 const emit = defineEmits<{
   openGoods: [id: number]
 }>()
-
+const takeChoice = (t:any,b:any) => {
+  goods_choice_container.value = false
+  let choiceName = ''
+  for (let i = 0; i < b.length; i++) {
+    choiceName += b[i].name + '，'
+  }
+  choiceName = choiceName.slice(-1)
+  let totalInfo = {
+    count: 1,
+    id: props.goods!.id ,
+    title: props.goods!.title,
+    logo: props.goods!.logo,
+    discount: props.goods!.discount,
+    choiceName,
+    price: props.goods!.price + t
+  }
+  addCart(totalInfo)
+}
 
 // 规格选择弹窗
 const goods_choice_container = ref<boolean>(false)
@@ -27,6 +56,20 @@ const goods_choice_container = ref<boolean>(false)
 const showGoodsChoice = () => {
 
 }
+const addGoodsSimple = () => {
+  addCart({
+    count: 1,
+    id: props.goods!.id,
+    title: props.goods!.title,
+    logo: props.goods!.logo,
+    discount: props.goods!.discount,
+    choiceName: '',
+    price: props.goods!.price
+  })
+}
+onMounted(() => {
+  // console.log('onegoods', goods)
+})
 </script>
 
 <template>
@@ -35,55 +78,26 @@ const showGoodsChoice = () => {
     <main>
       <section class="flex" @click="emit('openGoods', 123)">
         <section class="icon">
-          <img class="icon-pic"/>
+          <img class="icon-pic" :src="config.URLPRE+goods!.logo!.slice(4)"/>
         </section>
         <section class="info">
-          <div class="info-title">啊十九大看来是</div>
+          <div class="info-title">{{ goods!.title }}</div>
           <div class="info-rank"><span>店内排行第一</span></div>
           <div class="info-text flex">
             <div class="info-text-1">月售400+</div>
             <div class="info-text-2">好评率 77%</div>
           </div>
-          <div class="info-discount"></div>
+          <div class="info-discount">{{ goods!.discount == 10 ? '' : goods!.discount+'折' }}</div>
           <div class="info-bottom flex flex-jc-sb">
-            <div class="info-bottom-left">￥<span>29</span></div>
-            <!-- <div class="info-bottom-right-1">+</div> -->
-            <div class="info-bottom-right-2" @click.stop="goods_choice_container = true">按规格</div>
+            <div class="info-bottom-left">￥<span>{{ goods!.price }}</span></div>
+            <div class="info-bottom-right-1" v-if="JSON.parse(goods!.choice!).length == 0" @click.stop="addGoodsSimple">+</div>
+            <div class="info-bottom-right-2" @click.stop="goods_choice_container = true" v-else>按规格</div>
           </div>
         </section>
       </section>
     </main>
     <div class="goods-choice" @click.stop="goods_choice_container = false" v-if="goods_choice_container">
-      <div class="my-goods-details" @click.stop>
-        <div class="my-goods-choice">
-          <div class="goods-title">美味</div>
-          <div class="goods-choice-item">
-            <div class="goods-choice-title">分量</div>
-            <div class="goods-choice-list">
-              <span class="goods-choice-name">零食</span>
-              <span class="goods-choice-money">￥10</span>
-            </div>
-            <div class="goods-choice-list">
-              <span class="goods-choice-name">零食</span>
-              <span class="goods-choice-money">￥10</span>
-            </div>
-          </div>
-        </div>
-        <div class="my-goods-select">
-          <div>已选规格：300kg、ok</div>
-        </div>
-        <div class="my-goods-count">
-          <div class="count-left">
-            <span class="count-info1">总计</span><span class="count-info2">$11.8</span>
-          </div>
-          <div>
-            <div class="count-right">
-              <span class="count-info3">+</span><span class="count-info4">加入购物车</span>
-            </div>
-            <!-- <div><el-input-number size="small"/></div> -->
-          </div>
-        </div>
-      </div>
+      <GoodsChoice :choice="JSON.parse(goods!.choice!)" @choice="takeChoice" @click.stop="goods_choice_container = false"/>
     </div>
   </div>
 </template>
